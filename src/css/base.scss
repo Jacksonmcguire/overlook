@@ -1,7 +1,119 @@
 /* This is an example of using Sass, otherwise plain CSS works too*/
-$primary-background: radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(252,70,107,1) 100%);
-;
+@import 'header';
 
-body {
-  background: $primary-background;
+$primary-background: radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(252,70,107,1) 100%);
+
+
+html, body {
+  height: 100%;
+}
+
+li {
+  list-style-type: none;
+}
+
+
+input[type="radio"] {
+  display: none;
+}
+// Header
+header {
+  display: grid;
+  grid-template: 1fr 1fr 1fr / 1fr 4fr 1fr;
+  height: 20%;
+}
+
+header h1 {
+  grid-area: 1 / 1 / 1 / 2;
+  text-align: center;
+}
+
+#profileIcon {
+  @include header-button('../user3.svg');
+  grid-area: 2 / 1 / 4 / 1;
+}
+
+
+#calendarIcon {
+  @include header-button('../calendar-date.svg');
+  grid-area: 2 / 3 / 4 / 3;
+}
+
+.dropdown-content {
+  display: flex;
+  flex-flow: column;
+  grid-area: 3 / 1 / 3 / 2;
+}
+
+.dropdown-content a {
+  color:rgba(155, 155, 155, 0.596);
+}
+// Mobile
+@media screen and (max-width: 414px) {
+  
+  .dropdown-content {
+    visibility: hidden;
+    position: fixed;
+    margin: 31% 0 0 5%;
+    padding-right: 12%;
+    padding-bottom: 1%;
+    background-color: rgb(179, 237, 255);
+    border-radius: 5px;
+  }
+
+  .dropdown-content > button,
+  .total-spent {
+    text-align: center;
+    background-color: transparent;
+    border: none;
+    margin: 4%;
+    font-size: 1em;
+  }
+
+  main {
+    height: 100%;
+    display: flex;
+    flex-flow: column;
+  }
+
+  main img {
+    border-radius: 5px;
+    margin: 5%;
+    height: 20%;
+    width: 80%;
+    align-self: center;
+  }
+
+  main form {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  input[type="radio"]:checked + label {
+    border-bottom: 1px solid blue;
+  }
+
+  ul {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    padding: 0;
+  }
+
+  li {
+    flex: none;
+    margin: 5%;
+    padding: 3%;
+    background-color: rgba(155, 155, 155, 0.596);
+    border-radius: 5px;
+  }
+
+  
+}
+
+
+.visible {
+  visibility: visible;
 }
