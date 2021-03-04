@@ -1,0 +1,7 @@
+@mixin header-button($background-img) {
+  background-color: transparent;
+  border: none;
+  background-image: url($background-img);
+  background-size: contain;
+  background-repeat: no-repeat;
+}
