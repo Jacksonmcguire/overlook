@@ -88,7 +88,52 @@ input[type="radio"]:checked + label {
 // Desktop
 @media screen and (min-width: 801px) {
   main {
-    display: grid;
+    display: flex;
+    flex-flow: row;
+  }
+
+  .dropdown-content {
+    margin: 6%;
+  }
+
+  .current-room-container {
+    width: 30%;
+    margin: 1%;
+    display: flex;
+    flex-flow: column;
+    background-color: whitesmoke;
+    border-radius: 5%;
+  }
+
+  .current-room-container > img {
+    height: 50%;
+  }
+
+  .bottom-container {
+    align-self: flex-end;
+    width: 65%;
+    height: 100%;
+    display: flex;
+  }
+
+  .book-btn {
+    align-self: flex-end;
+  }
+
+  main form {
+    display: flex;
+    flex-flow: column;
+    justify-content: space-around;
+    padding: 5%;
+    width: 15%;
+  }
+
+  .bottom-container li {
+    margin: 5%;
+  }
+
+  .bottom-container ul {
+    white-space: nowrap;
   }
 }
 // tablet
@@ -98,6 +143,10 @@ input[type="radio"]:checked + label {
     height: 100%;
     display: flex;
     flex-flow: column;
+  }
+
+  .dropdown-content {
+    margin-top: 15%;
   }
 
   .current-room-container {
