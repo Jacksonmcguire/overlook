@@ -4,7 +4,9 @@
 // An example of how you tell webpack to use a CSS (SCSS) file
 import './css/base.scss';
 import HotelRepository from './hotel-repository';
-import Customer from './customer'
+import Customer from './customer';
+import Room from './Room';
+import Booking from './Booking';
 
 // An example of how you tell webpack to use an image (also need to link to it in the index.html)
 import './images/pexels-pixabay-271624.jpg'
@@ -25,9 +27,8 @@ profileButton.addEventListener('click', () => {
 Promise.all([getCustomerData, getRoomsData, getBookingsData])
   .then((promiseArr) => {
     addHotelData(promiseArr[0].customers, 'customers', Customer);
-    console.log(hotelRepo.customers)
-    addHotelData(promiseArr[1].rooms, 'rooms', 'Room');
-    addHotelData(promiseArr[2].bookings, 'bookings', 'Booking');
+    addHotelData(promiseArr[1].rooms, 'rooms', Room);
+    addHotelData(promiseArr[2].bookings, 'bookings', Booking);
     console.log(hotelRepo)
   })
 
