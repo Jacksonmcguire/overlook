@@ -13,7 +13,6 @@ html, body {
 li {
   list-style-type: none;
   padding: 3%;
-  background-color: rgba(155, 155, 155, 0.596);
   border-radius: 5px;
 }
 
@@ -92,6 +91,7 @@ input[type="radio"]:checked + label {
   main {
     display: flex;
     flex-flow: row;
+    height: 100%;
   }
 
   .dropdown-content {
@@ -105,17 +105,35 @@ input[type="radio"]:checked + label {
     flex-flow: column;
     background-color: whitesmoke;
     border-radius: 5%;
+    height: 50%;
   }
 
-  li > img {
-    height: 10vh;
+  .glide {
+    align-self: flex-end;
+    height: 60%;
+  }
+
+  .room-container {
+    padding: 0;
+    margin: 0;
+  }
+
+  .glide__slide img,
+  .glide__slide article {
+    width: 30vh;
+  }
+  
+  .glide__slide article {
+    background-color: grey;
+    margin: 0;
   }
 
   .bottom-container {
-    align-self: flex-end;
-    width: 65%;
-    height: 100%;
+    // align-self: flex-end;
+    width: 55%;
+    height: 60%;
     display: flex;
+    // justify-content: flex-start;
   }
 
   .book-btn {
@@ -128,10 +146,11 @@ input[type="radio"]:checked + label {
     justify-content: space-around;
     padding: 5%;
     width: 15%;
+    height: 50%;
   }
 
   .bottom-container li {
-    margin: 5%;
+    margin: 0 5% 0 5%;
   }
 
   .bottom-container ul {
