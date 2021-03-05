@@ -2,6 +2,7 @@
 // Do not delete or rename this file ********
 
 // An example of how you tell webpack to use a CSS (SCSS) file
+import './glide.js'
 import './css/base.scss';
 import HotelRepository from './hotel-repository';
 import Customer from './customer';
