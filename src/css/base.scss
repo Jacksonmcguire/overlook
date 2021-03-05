@@ -187,8 +187,8 @@ input[type="radio"]:checked + label {
 
   li {
     flex: none;
-    height: 70%;
-    width: 75%;
+    // height: 70%;
+    // width: 75%;
     background-color: whitesmoke;
     margin: 5%;
   }
@@ -213,13 +213,13 @@ input[type="radio"]:checked + label {
     width: 99%;
   }
 
-  .current-room-container > img {
-    flex: .5;
-    width: 50%;
+  .glide {
+    height: 10vh;
   }
 
-  .current-room-info {
-    height: 10%;
+  .current-room-container > img {
+    width: 100%;
+    background-size: cover;
   }
 
   main form {
@@ -229,13 +229,19 @@ input[type="radio"]:checked + label {
     align-self: normal;
   }
 
+  .bottom-container li {
+    padding: 0;
+  }
+
   .bottom-container ul {
     width: 100%;
   }
 
-  li {
-    flex: none;
-    margin: 5%;
+  .glide__slide img,
+  .glide__slide article {
+    // flex: ;
+    height: 15vh;
+    // margin: 5%;
   }
 
   .bottom-container {
