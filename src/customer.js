@@ -16,12 +16,9 @@ class Customer extends HotelRepository {
   }
 
   getTotal() {
-    console.log
     return this.bookedRooms.reduce((totalSpent, booking) => {
-      console.log(booking)
       const matchingRoom = 
       this.rooms.find(room => room.number === booking.roomNumber);
-      // console.log(matchingRoom)
       if (matchingRoom) {
         totalSpent += matchingRoom.costPerNight;
       }
