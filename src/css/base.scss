@@ -13,7 +13,6 @@ html, body {
 li {
   list-style-type: none;
   padding: 3%;
-  background-color: rgba(155, 155, 155, 0.596);
   border-radius: 5px;
 }
 
@@ -26,6 +25,9 @@ header {
   display: grid;
   grid-template: 1fr 1fr 1fr / 1fr 4fr 1fr;
   height: 20%;
+  position: fixed;
+  top: 0;
+  width: 100%;
 }
 
 header h1 {
@@ -51,10 +53,12 @@ header h1 {
   grid-area: 3 / 1 / 3 / 2;
   position: fixed;
   margin: 31% 0 0 5%;
-  padding-right: 12%;
+  padding-right: 5%;
   padding-bottom: 1%;
   background-color: rgb(179, 237, 255);
   border-radius: 5px;
+  overflow-y: scroll;
+  height: 20%;
 }
 
 .dropdown-content > button,
@@ -92,6 +96,8 @@ input[type="radio"]:checked + label {
   main {
     display: flex;
     flex-flow: row;
+    height: 100%;
+    margin-top: 10%;
   }
 
   .dropdown-content {
@@ -105,17 +111,35 @@ input[type="radio"]:checked + label {
     flex-flow: column;
     background-color: whitesmoke;
     border-radius: 5%;
-  }
-
-  .current-room-container > img {
     height: 50%;
   }
 
-  .bottom-container {
+  .glide {
     align-self: flex-end;
-    width: 65%;
-    height: 100%;
+    height: 60%;
+  }
+
+  .room-container {
+    padding: 0;
+    margin: 0;
+  }
+
+  .glide__slide img,
+  .glide__slide article {
+    width: 30vh;
+  }
+  
+  .glide__slide article {
+    background-color: grey;
+    margin: 0;
+  }
+
+  .bottom-container {
+    // align-self: flex-end;
+    width: 55%;
+    height: 60%;
     display: flex;
+    // justify-content: flex-start;
   }
 
   .book-btn {
@@ -128,10 +152,11 @@ input[type="radio"]:checked + label {
     justify-content: space-around;
     padding: 5%;
     width: 15%;
+    height: 50%;
   }
 
   .bottom-container li {
-    margin: 5%;
+    margin: 0 5% 0 5%;
   }
 
   .bottom-container ul {
