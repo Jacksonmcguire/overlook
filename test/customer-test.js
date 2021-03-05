@@ -12,9 +12,9 @@ describe('Customer', function() {
   let customer;
   let hotelRepo;
   beforeEach(() => {
-    hotelRepo = new HotelRepository();
-    hotelRepo.customers = userData.map(user => new Customer(user));
-    customer = new Customer(hotelRepo.customers[0]);
+    hotelRepo = new HotelRepository(rooms, bookings);
+    hotelRepo.customers = userData.map(user => new Customer(rooms, bookings, user));
+    customer = hotelRepo.customers[0]
   })
   it('should have an id', function() {
     expect(customer.id).to.deep.equal(1);
