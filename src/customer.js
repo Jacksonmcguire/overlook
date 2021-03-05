@@ -1,9 +1,9 @@
 import HotelRepository from './hotel-repository'
 class Customer extends HotelRepository {
-  constructor({id, name}) {
-    super();
-    this.id = id;
-    this.name = name;
+  constructor(roomData, bookingData, userData) {
+    super(roomData, bookingData);
+    this.id = userData.id;
+    this.name = userData.name;
     this.totalSpent = 0;
     this.bookedRooms = [];
   }

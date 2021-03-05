@@ -1,7 +1,7 @@
 class HotelRepository {
-  constructor() {
-    this.bookings = [];
-    this.rooms = [];
+  constructor(roomData, bookingData) {
+    this.bookings = bookingData;
+    this.rooms = roomData;
     this.customers = [];
   }
 }
