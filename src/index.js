@@ -77,7 +77,6 @@ function showRoomsBooked() {
        <ul></ul>`; 
     } 
     dropdownMenu.querySelector('ul').innerHTML +=
-    `<li class="booking">${booking.date}: Room #${booking.roomNumber}</li>`
-
+    `<li class="booking">${booking.date}: Room #${booking.roomNumber}</li>`;
   })
 }
