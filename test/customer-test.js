@@ -13,7 +13,8 @@ describe('Customer', function() {
   let hotelRepo;
   beforeEach(() => {
     hotelRepo = new HotelRepository(rooms, bookings);
-    hotelRepo.customers = userData.map(user => new Customer(rooms, bookings, user));
+    hotelRepo.customers =
+    userData.map(user => new Customer(rooms, bookings, user));
     customer = hotelRepo.customers[0]
   })
   it('should have an id', function() {
