@@ -19,11 +19,10 @@ let customer = null;
 
 const profileButton = document.querySelector('#profileIcon');
 const dropdownMenu = document.querySelector('.dropdown-content');
-const totalSpent = document.querySelector('.total-spent');
-const profileName = dropdownMenu.querySelector('h1');
 const yourStays = dropdownMenu.querySelector('button');
 const currentRoomContainer = document.querySelector('.current-room-container');
 const currentRoomImg = currentRoomContainer.querySelector('img');
+let goBackBtn = dropdownMenu.querySelector('.go-back');
 
 const getCustomerData = fetch(customersUrl).then(response => response.json());
 const getRoomsData = fetch(roomsUrl).then(response => response.json());
@@ -36,7 +35,7 @@ profileButton.addEventListener('click', () => {
 })
 
 yourStays.addEventListener('click', showRoomsBooked);
-
+dropdownMenu.addEventListener('click', refreshProfile);
 
 Promise.all([getCustomerData, getRoomsData, getBookingsData])
   .then((promiseArr) => {
@@ -63,13 +62,15 @@ function buildPage() {
 }
 
 function buildProfile() {
+  const profileName = dropdownMenu.querySelector('h1');
+  const totalSpent = document.querySelector('.total-spent');
+
   customer.getBookings();
   profileName.innerText = customer.name;
   totalSpent.innerText = `Total Spent: $${customer.getTotal().toFixed(0)}`;
 }
 
 function showRoomsBooked() {
-  console.log(customer.bookedRooms)
   customer.bookedRooms.forEach((booking, index) => {
     if (index === 0) {
       dropdownMenu.innerHTML =
@@ -79,4 +80,14 @@ function showRoomsBooked() {
     dropdownMenu.querySelector('ul').innerHTML +=
     `<li class="booking">${booking.date}: Room #${booking.roomNumber}</li>`;
   })
+}
+
+function refreshProfile() {
+  if (event.target.classList.contains('go-back')) {
+    dropdownMenu.innerHTML = 
+    `<h1></h1>
+    <h2 class="total-spent"></h2>
+    <button>Your Stays</button>`;
+    buildProfile();
+  }
 }
