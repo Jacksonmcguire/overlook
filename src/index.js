@@ -25,6 +25,8 @@ const currentRoomImg = currentRoomContainer.querySelector('img');
 let goBackBtn = dropdownMenu.querySelector('.go-back');
 const profileName = dropdownMenu.querySelector('h1');
 const totalSpent = document.querySelector('.total-spent');
+const dateInput = document.querySelector('#calendarIcon');
+const slides = document.querySelectorAll('.glide__slide');
 
 const getCustomerData = fetch(customersUrl).then(response => response.json());
 const getRoomsData = fetch(roomsUrl).then(response => response.json());
@@ -38,6 +40,8 @@ profileButton.addEventListener('click', () => {
 
 yourStays.addEventListener('click', showRoomsBooked);
 goBackBtn.addEventListener('click', refreshProfile);
+dateInput.addEventListener('change', filterDate);
+
 
 Promise.all([getCustomerData, getRoomsData, getBookingsData])
   .then((promiseArr) => {
@@ -61,6 +65,7 @@ function addCustomerData(dataSet, dataSets) {
 
 function buildPage() {
   buildProfile();
+  buildCards();
 }
 
 function buildProfile() {
@@ -76,7 +81,7 @@ function showRoomsBooked() {
   profileName.classList.add('hidden');
   totalSpent.classList.add('hidden');
   yourStays.classList.add('hidden');
-  
+
   customer.bookedRooms.forEach(booking => {
     const listItem = document.createElement('li');
     dropdownMenu.querySelector('ul').appendChild(listItem)
@@ -92,4 +97,36 @@ function refreshProfile() {
   profileName.classList.remove('hidden');
   totalSpent.classList.remove('hidden');
   yourStays.classList.remove('hidden');
+}
+
+function filterDate() {
+  console.log(customer.filterByDate(dateInput.value.replaceAll('-', '/')));
+  const availableToday = 
+  customer.filterByDate(dateInput.value.replaceAll('-', '/'));
+  availableToday.forEach(available => {
+    generateRoomCard(available)
+  })
+}
+
+function buildCards() {
+  customer.rooms.forEach((room, index) => {
+    generateRoomCard(room, index);
+  })
+}
+/*  */
+function generateRoomCard(roomObj, listItem) {
+  // const currentCard = document.createElement('li');
+  let bidet;
+  roomObj.bidet ? bidet = 'Bidet' : bidet = '';
+  let bed;
+  roomObj.numBeds > 1 ?
+    bed = `${roomObj.numBeds} ${roomObj.bedSize} Beds` :
+    bed = `${roomObj.numBeds} ${roomObj.bedSize} Bed`;
+  slides.item(listItem).classList.remove('hidden')
+  slides.item(listItem).innerHTML = 
+  `<img src="./images/pexels-pixabay-271624.jpg" alt="hotel room">
+  <article>Amenities
+    <p class="amenities">${bidet}</p>
+    <p class="amenities">${bed}</p>
+  </article>`;
 }
