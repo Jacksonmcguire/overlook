@@ -28,6 +28,7 @@ header {
   position: fixed;
   top: 0;
   width: 100%;
+  background-color: whitesmoke;
 }
 
 header h1 {
@@ -40,10 +41,14 @@ header h1 {
   grid-area: 2 / 1 / 4 / 1;
 }
 
-
 #calendarIcon {
-  @include header-button('../calendar-date.svg');
-  grid-area: 2 / 3 / 4 / 3;
+  border: none;
+  background-size: contain;
+  grid-area: 2 / 3 / 4 / 4;
+  justify-content: flex-start;
+  align-content: flex-start;
+  width: 85%;
+  background-color: transparent;
 }
 
 .dropdown-content {
@@ -308,4 +313,8 @@ input[type="radio"]:checked + label {
 
 .visible {
   visibility: visible;
+}
+
+.hidden {
+  display: none;
 }
