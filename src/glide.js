@@ -4,7 +4,7 @@ const config = {
   perView: 4,
   focusAt: 'center',
   // autoplay: 2500,
-  dragTreshold: 100,
+  dragTreshold: 1,
   breakpoints: {
     800: {
       perView: 2
