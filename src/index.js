@@ -19,10 +19,12 @@ let customer = null;
 
 const profileButton = document.querySelector('#profileIcon');
 const dropdownMenu = document.querySelector('.dropdown-content');
-const yourStays = dropdownMenu.querySelector('button');
+let yourStays = dropdownMenu.querySelector('button');
 const currentRoomContainer = document.querySelector('.current-room-container');
 const currentRoomImg = currentRoomContainer.querySelector('img');
 let goBackBtn = dropdownMenu.querySelector('.go-back');
+const profileName = dropdownMenu.querySelector('h1');
+const totalSpent = document.querySelector('.total-spent');
 
 const getCustomerData = fetch(customersUrl).then(response => response.json());
 const getRoomsData = fetch(roomsUrl).then(response => response.json());
@@ -35,7 +37,7 @@ profileButton.addEventListener('click', () => {
 })
 
 yourStays.addEventListener('click', showRoomsBooked);
-dropdownMenu.addEventListener('click', refreshProfile);
+goBackBtn.addEventListener('click', refreshProfile);
 
 Promise.all([getCustomerData, getRoomsData, getBookingsData])
   .then((promiseArr) => {
@@ -62,32 +64,32 @@ function buildPage() {
 }
 
 function buildProfile() {
-  const profileName = dropdownMenu.querySelector('h1');
-  const totalSpent = document.querySelector('.total-spent');
-
+  customer.totalSpent = 0;
   customer.getBookings();
   profileName.innerText = customer.name;
   totalSpent.innerText = `Total Spent: $${customer.getTotal().toFixed(0)}`;
 }
 
 function showRoomsBooked() {
-  customer.bookedRooms.forEach((booking, index) => {
-    if (index === 0) {
-      dropdownMenu.innerHTML =
-      `<button class="go-back"></button>
-       <ul></ul>`; 
-    } 
-    dropdownMenu.querySelector('ul').innerHTML +=
+  goBackBtn.classList.remove('hidden');
+  dropdownMenu.querySelector('ul').classList.remove('hidden');
+  profileName.classList.add('hidden');
+  totalSpent.classList.add('hidden');
+  yourStays.classList.add('hidden');
+  
+  customer.bookedRooms.forEach(booking => {
+    const listItem = document.createElement('li');
+    dropdownMenu.querySelector('ul').appendChild(listItem)
+    listItem.innerHTML =
     `<li class="booking">${booking.date}: Room #${booking.roomNumber}</li>`;
   })
 }
 
 function refreshProfile() {
-  if (event.target.classList.contains('go-back')) {
-    dropdownMenu.innerHTML = 
-    `<h1></h1>
-    <h2 class="total-spent"></h2>
-    <button>Your Stays</button>`;
-    buildProfile();
-  }
+  goBackBtn.classList.add('hidden');
+  dropdownMenu.querySelector('ul').classList.add('hidden');
+  dropdownMenu.querySelector('ul').innerHTML = '';
+  profileName.classList.remove('hidden');
+  totalSpent.classList.remove('hidden');
+  yourStays.classList.remove('hidden');
 }
