@@ -91,6 +91,24 @@ input[type="radio"]:checked + label {
   margin-left: -20%;
 }
 
+// .glide__arrows {
+
+// }
+.glide__arrow--right {
+  background-image: url('../images/next.svg');
+  background-repeat: no-repeat;
+  border: none;
+  background-size:contain;
+  height: 30px;
+  width: 30px;
+}
+
+.glide__arrow--left {
+ @extend .glide__arrow--right;
+ background-image: url('../images/left-arrow.svg');
+}
+
+
 // Desktop
 @media screen and (min-width: 801px) {
   main {
@@ -128,18 +146,29 @@ input[type="radio"]:checked + label {
   .glide__slide article {
     width: 30vh;
   }
-  
+
+  .glide__bullets {
+    bottom: 0;
+  }
+
+  .glide__bullet {
+    align-self: flex-end;
+    background-color: grey;
+  }
+
+  .glide__bullet:hover, .glide__bullet:focus {
+    background-color: whitesmoke;
+  }
+
   .glide__slide article {
     background-color: grey;
     margin: 0;
   }
 
   .bottom-container {
-    // align-self: flex-end;
     width: 55%;
     height: 60%;
     display: flex;
-    // justify-content: flex-start;
   }
 
   .book-btn {
