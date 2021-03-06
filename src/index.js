@@ -2,7 +2,8 @@
 // Do not delete or rename this file ********
 
 // An example of how you tell webpack to use a CSS (SCSS) file
-import './glide.js'
+import glide from './glide'
+// import './glide'
 import './css/base.scss';
 import HotelRepository from './hotel-repository';
 import Customer from './customer';
@@ -26,7 +27,12 @@ let goBackBtn = dropdownMenu.querySelector('.go-back');
 const profileName = dropdownMenu.querySelector('h1');
 const totalSpent = document.querySelector('.total-spent');
 const dateInput = document.querySelector('#calendarIcon');
-const slides = document.querySelectorAll('.glide__slide');
+const glideTrack = document.querySelector('.glide__track')
+const slides = document.createElement('ul');
+glideTrack.append(slides);
+slides.classList.add('glide__slides');
+let currentSlides = [];
+
 
 const getCustomerData = fetch(customersUrl).then(response => response.json());
 const getRoomsData = fetch(roomsUrl).then(response => response.json());
@@ -65,7 +71,7 @@ function addCustomerData(dataSet, dataSets) {
 
 function buildPage() {
   buildProfile();
-  buildCards();
+  buildCards(customer.rooms);
 }
 
 function buildProfile() {
@@ -99,34 +105,43 @@ function refreshProfile() {
   yourStays.classList.remove('hidden');
 }
 
-function filterDate() {
-  console.log(customer.filterByDate(dateInput.value.replaceAll('-', '/')));
-  const availableToday = 
+function filterDate() { 
   customer.filterByDate(dateInput.value.replaceAll('-', '/'));
-  availableToday.forEach(available => {
-    generateRoomCard(available)
-  })
+  console.log(customer.filterByDate(dateInput.value.replaceAll('-', '/')))
+  buildCards(customer.availableRooms)
+  console.log(slides)
 }
 
-function buildCards() {
-  customer.rooms.forEach((room, index) => {
-    generateRoomCard(room, index);
+function buildCards(dataSet) {
+  resetCards();
+  dataSet.forEach((room) => {
+    generateRoomCard(room);
   })
+  
+  glide.mount()
 }
-/*  */
-function generateRoomCard(roomObj, listItem) {
-  // const currentCard = document.createElement('li');
+
+function generateRoomCard(roomObj) {
   let bidet;
   roomObj.bidet ? bidet = 'Bidet' : bidet = '';
   let bed;
   roomObj.numBeds > 1 ?
     bed = `${roomObj.numBeds} ${roomObj.bedSize} Beds` :
     bed = `${roomObj.numBeds} ${roomObj.bedSize} Bed`;
-  slides.item(listItem).classList.remove('hidden')
-  slides.item(listItem).innerHTML = 
+  const slide = document.createElement('li');
+  slides.append(slide);
+  slide.classList.add('glide__slide', 'room-container')
+  slide.innerHTML = 
   `<img src="./images/pexels-pixabay-271624.jpg" alt="hotel room">
   <article>Amenities
     <p class="amenities">${bidet}</p>
     <p class="amenities">${bed}</p>
   </article>`;
+}
+
+function resetCards() {
+  console.log(slides)
+  while (slides.firstChild) {
+    slides.removeChild(slides.firstChild)
+  }
 }
