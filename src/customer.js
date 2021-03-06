@@ -10,7 +10,7 @@ class Customer extends HotelRepository {
   }
   getBookings() {
     this.bookings.forEach(booking => {
-      if (booking.userID === this.id) {
+      if (booking.userID === this.id && !this.bookedRooms.includes(booking)) {
         this.bookedRooms.push(booking)
       }
     })
