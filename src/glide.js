@@ -1,7 +1,8 @@
 import Glide from '@glidejs/glide'
 const config = {
   type: 'carousel',
-  perView: 4,
+  gap: 1,
+  perView: 10,
   focusAt: 'center',
   // autoplay: 2500,
   dragTreshold: 1,
