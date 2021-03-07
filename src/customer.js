@@ -36,8 +36,8 @@ class Customer extends HotelRepository {
     return this.availableRooms;
   }
 
-  filterByType(roomType) {
-    return this.availableRooms.filter(room => room.roomType === roomType);
+  filterByType(roomType, dataSet = this.availableRooms) {
+    return dataSet.filter(room => room.roomType === roomType);
   }
 }
 
