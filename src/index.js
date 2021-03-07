@@ -22,17 +22,11 @@ const profileButton = document.querySelector('#profileIcon');
 const dropdownMenu = document.querySelector('.dropdown-content');
 let yourStays = dropdownMenu.querySelector('button');
 const currentRoomContainer = document.querySelector('.current-room-container');
-const bottomContainer = document.querySelector('.bottom-container');
-const currentRoomImg = currentRoomContainer.querySelector('img');
 let goBackBtn = dropdownMenu.querySelector('.go-back');
 const profileName = dropdownMenu.querySelector('h1');
 const totalSpent = document.querySelector('.total-spent');
 const dateInput = document.querySelector('#calendarIcon');
-const suiteBtn = document.querySelector('#type1');
 const selectDropdwn = document.querySelector('select')
-const singleRoomBtn = document.querySelector('#type2');
-const residentialSuiteBtn = document.querySelector('#type3');
-const juniorSuiteBtn = document.querySelector('#type4');
 const glideTrack = document.querySelector('.glide__track')
 const slides = document.createElement('ul');
 const glideArrows = document.querySelectorAll('.glide__arrow');
@@ -145,67 +139,67 @@ function buildCards(dataSet) {
     
   } else {
     console.log(currentRooms, customer.availableRooms)
-    showBookedMsg();
   }
-  // new Set(Array.from(slides.children))
-
 }
 
 function generateRoomCard(roomObj) {
   let bidet;
-  roomObj.bidet ? bidet = 'Bidet' : bidet = '';
   let bed;
+  roomObj.bidet ? bidet = 'Bidet' : bidet = '';
   roomObj.numBeds > 1 ?
     bed = `${roomObj.numBeds} ${roomObj.bedSize} Beds` :
     bed = `${roomObj.numBeds} ${roomObj.bedSize} Bed`;
   const slide = document.createElement('li');
   slides.appendChild(slide);
   slide.classList.add('glide__slide', 'room-container')
+  insertCardHtml(slide, bed, bidet, roomObj.number)
+}
+
+function insertCardHtml(slide, bed, bidet, num) {
   slide.innerHTML = 
   `<img src="./images/pexels-pixabay-271624.jpg" alt="hotel room">
   <article>Amenities
     <button class="see-more">More info</button>
     <p class="amenities">${bidet}</p>
     <p class="amenities">${bed}</p>
-    <p class="number">${roomObj.number}
+    <p class="number">${num}
   </article>`;
-  return slide;
 }
 
 function filterByType() {
-  console.log(selectDropdwn.value)
   if (selectDropdwn.value === '0') {
     buildLimitedCards(customer.availableRooms)
   } else {
     activeType = selectDropdwn.value;
     buildLimitedCards(customer.filterByType(activeType));
-    
     console.log(customer.filterByType(activeType))
   }
 }
 
-function buildLimitedCards(dataSet) {
-  if (dataSet.length < 4) {
+function checkArrows(length) {
+  if (length < 4) {
     glideArrows[0].classList.add('hidden')
     glideArrows[1].classList.add('hidden')
   } else {
     glideArrows[0].classList.remove('hidden')
     glideArrows[1].classList.remove('hidden')
   }
-  console.log(dataSet)
+}
+
+function buildLimitedCards(dataSet) {
+  checkArrows(dataSet.length)
   const numToMatch = (slide => Number(slide.querySelector('.number').innerText))
 
   Array.from(originalSlides).forEach(slide => {
-    const foundRoom = dataSet.find(room => {
-      return room.number === numToMatch(slide);
-    })
+    const foundRoom = dataSet.find(room => room.number === numToMatch(slide))
     if (foundRoom && !Array.from(slides.children).includes(slide)) {
       generateRoomCard(foundRoom)
     } else if (!foundRoom && Array.from(slides.children).includes(slide)) {
       removeSlide(slide);
     }
   })
-  glide['_c'].Html.slides = [...slides.children];
+  if (!dataSet.length) showBookedMsg();
+  glide['_c'].Html.slides = [...Array.from(slides.children)];
 }
 
 function removeSlide(slide) {
@@ -264,8 +258,9 @@ function checkUserErrors() {
 }
 
 function showBookedMsg() {
+  console.log(customer.availableRooms)
   bookMsg.classList.remove('vis-hidden');
   const type = activeType;
   bookMsg.innerText = 
-  `Sorry we have no available ${type}'s available on ${activeDate}`;
+  `Sorry we have no available ${type}'s on ${activeDate}`;
 }
