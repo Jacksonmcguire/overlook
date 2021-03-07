@@ -29,7 +29,7 @@ const profileName = dropdownMenu.querySelector('h1');
 const totalSpent = document.querySelector('.total-spent');
 const dateInput = document.querySelector('#calendarIcon');
 const suiteBtn = document.querySelector('#type1');
-const typeForm = bottomContainer.querySelector('form')
+const selectDropdwn = document.querySelector('select')
 const singleRoomBtn = document.querySelector('#type2');
 const residentialSuiteBtn = document.querySelector('#type3');
 const juniorSuiteBtn = document.querySelector('#type4');
@@ -43,6 +43,7 @@ let currentRooms = [];
 let activeType = null;
 let featuredRoom = null;
 let activeDate = null;
+let originalSlides = null;
 
 
 const getCustomerData = fetch(customersUrl).then(response => response.json());
@@ -59,7 +60,7 @@ profileButton.addEventListener('click', () => {
 yourStays.addEventListener('click', showRoomsBooked);
 goBackBtn.addEventListener('click', refreshProfile);
 dateInput.addEventListener('change', filterDate);
-// typeForm.addEventListener('click', filterByType);
+selectDropdwn.addEventListener('change', filterByType);
 glideTrack.addEventListener('click', selectRoom);
 currentRoomContainer.addEventListener('click', bookRoom);
 
@@ -86,6 +87,7 @@ function addCustomerData(dataSet, dataSets) {
 function buildPage() {
   buildProfile();
   buildCards(customer.rooms);
+  originalSlides = Array.from(slides.children);
 }
 
 function buildProfile() {
@@ -120,30 +122,29 @@ function refreshProfile() {
 }
 
 function filterDate() { 
-  typeForm.classList.remove('vis-hidden');
+  selectDropdwn.classList.remove('vis-hidden');
+  activeDate = dateInput.value.replaceAll('-', '/');
   const availableRooms = 
-  customer.filterByDate(dateInput.value.replaceAll('-', '/'));
+  customer.filterByDate(activeDate);
   buildCards(availableRooms);
 
-  activeDate = dateInput.value.replaceAll('-', '/');
 }
 
 function buildCards(dataSet) {
-  currentRooms = dataSet;
-  
-  if (currentRooms === customer.rooms) {
+  currentRooms = customer.availableRooms;
+  if (dataSet === customer.rooms) {
     glideArrows[0].classList.remove('hidden')
     glideArrows[1].classList.remove('hidden')
-    currentRooms.map((room) => {
+    dataSet.map((room) => {
       return generateRoomCard(room);
     })
     glide.mount()
 
   } else if (currentRooms.length > 0) {
-
     buildLimitedCards(currentRooms)
     
   } else {
+    console.log(currentRooms, customer.availableRooms)
     showBookedMsg();
   }
   // new Set(Array.from(slides.children))
@@ -171,20 +172,15 @@ function generateRoomCard(roomObj) {
   return slide;
 }
 
-function filterByType(e) {
-  if (e.target.checked && e.target === activeType) {
-    e.target.checked = false;
-    // Array.from(slides.children).forEach(slide => removeSlide(slide))
+function filterByType() {
+  console.log(selectDropdwn.value)
+  if (selectDropdwn.value === '0') {
     buildLimitedCards(customer.availableRooms)
-
   } else {
-    [singleRoomBtn, juniorSuiteBtn, residentialSuiteBtn, suiteBtn].forEach(btn => {
-      if (btn === e.target) {
-        activeType = e.target;
-        buildCards(customer.filterByType(btn.labels[0].innerText, currentRooms));
-        console.log(slides, currentRooms)
-      }
-    })
+    activeType = selectDropdwn.value;
+    buildLimitedCards(customer.filterByType(activeType));
+    
+    console.log(customer.filterByType(activeType))
   }
 }
 
@@ -196,20 +192,20 @@ function buildLimitedCards(dataSet) {
     glideArrows[0].classList.remove('hidden')
     glideArrows[1].classList.remove('hidden')
   }
-  
-  Array.from(slides.children).forEach(slide => {
+  console.log(dataSet)
+  const numToMatch = (slide => Number(slide.querySelector('.number').innerText))
+
+  Array.from(originalSlides).forEach(slide => {
     const foundRoom = dataSet.find(room => {
-      return room.number === Number(slide.querySelector('.number').innerText)
+      return room.number === numToMatch(slide);
     })
-    if (foundRoom) {
-      console.log('hello')
-      generateRoomCard(foundRoom);
-    } else {
+    if (foundRoom && !Array.from(slides.children).includes(slide)) {
+      generateRoomCard(foundRoom)
+    } else if (!foundRoom && Array.from(slides.children).includes(slide)) {
       removeSlide(slide);
     }
   })
   glide['_c'].Html.slides = [...slides.children];
-  console.log(slides.children)
 }
 
 function removeSlide(slide) {
@@ -220,7 +216,6 @@ function removeSlide(slide) {
 
 function selectRoom(e) {
   if (e.target.classList.contains('see-more')) {
-    // console.log(e.target.parentNode.querySelector('.number').innerText)
     const roomNum = 
     Number(e.target.parentNode.querySelector('.number').innerText);
     const room = customer.rooms.find(room => room.number === roomNum);
@@ -232,7 +227,6 @@ function showCurrentRoom(room) {
   currentRoomContainer.classList.remove('vis-hidden');
   featuredRoom = room;
   const infoList = currentRoomContainer.querySelector('.room-info');
-  console.log(infoList.children)
   infoList.children[0].innerText = room.roomType;
   infoList.children[1].innerText = room.number;
   infoList.children[2].innerText = room.bidet;
@@ -254,7 +248,7 @@ function bookRoom(e) {
           return response.json();
         } 
       })
-    }
+  }
 }
 
 function checkUserErrors() {
@@ -271,7 +265,7 @@ function checkUserErrors() {
 
 function showBookedMsg() {
   bookMsg.classList.remove('vis-hidden');
-  const type = activeType.labels[0].innerText
+  const type = activeType;
   bookMsg.innerText = 
   `Sorry we have no available ${type}'s available on ${activeDate}`;
 }
