@@ -35,9 +35,14 @@ const residentialSuiteBtn = document.querySelector('#type3');
 const juniorSuiteBtn = document.querySelector('#type4');
 const glideTrack = document.querySelector('.glide__track')
 const slides = document.createElement('ul');
+const glideArrows = document.querySelectorAll('.glide__arrow');
+const bookMsg = document.querySelector('.booked-msg');
 glideTrack.append(slides);
 slides.classList.add('glide__slides');
 let currentRooms = [];
+let activeType = null;
+let featuredRoom = null;
+let activeDate = null;
 
 
 const getCustomerData = fetch(customersUrl).then(response => response.json());
@@ -47,13 +52,16 @@ const getBookingsData = fetch(bookingsUrl).then(response => response.json());
 
 
 profileButton.addEventListener('click', () => {
+  buildProfile()
   dropdownMenu.classList.toggle('visible')
 })
 
 yourStays.addEventListener('click', showRoomsBooked);
 goBackBtn.addEventListener('click', refreshProfile);
 dateInput.addEventListener('change', filterDate);
-typeForm.addEventListener('click', filterByType);
+// typeForm.addEventListener('click', filterByType);
+glideTrack.addEventListener('click', selectRoom);
+currentRoomContainer.addEventListener('click', bookRoom);
 
 Promise.all([getCustomerData, getRoomsData, getBookingsData])
   .then((promiseArr) => {
@@ -112,34 +120,34 @@ function refreshProfile() {
 }
 
 function filterDate() { 
+  typeForm.classList.remove('vis-hidden');
   const availableRooms = 
   customer.filterByDate(dateInput.value.replaceAll('-', '/'));
   buildCards(availableRooms);
+
+  activeDate = dateInput.value.replaceAll('-', '/');
 }
 
 function buildCards(dataSet) {
   currentRooms = dataSet;
   
   if (currentRooms === customer.rooms) {
-    const currentCards = currentRooms.map((room) => {
+    glideArrows[0].classList.remove('hidden')
+    glideArrows[1].classList.remove('hidden')
+    currentRooms.map((room) => {
       return generateRoomCard(room);
     })
     glide.mount()
 
+  } else if (currentRooms.length > 0) {
+
+    buildLimitedCards(currentRooms)
+    
   } else {
-    Array.from(slides.children).forEach(slide => {
-      const foundRoom = currentRooms.find(room => 
-        room.number === Number(slide.querySelector('.number').innerText))
-      if (foundRoom) {
-        generateRoomCard(foundRoom);
-      } else {
-        slides.removeChild(slide)
-        slide.remove();
-        slide.classList.add('hidden');
-      }
-    })
-    glide['_c'].Html.slides = [...slides.children];
+    showBookedMsg();
   }
+  // new Set(Array.from(slides.children))
+
 }
 
 function generateRoomCard(roomObj) {
@@ -155,6 +163,7 @@ function generateRoomCard(roomObj) {
   slide.innerHTML = 
   `<img src="./images/pexels-pixabay-271624.jpg" alt="hotel room">
   <article>Amenities
+    <button class="see-more">More info</button>
     <p class="amenities">${bidet}</p>
     <p class="amenities">${bed}</p>
     <p class="number">${roomObj.number}
@@ -163,10 +172,106 @@ function generateRoomCard(roomObj) {
 }
 
 function filterByType(e) {
-  [singleRoomBtn, juniorSuiteBtn, residentialSuiteBtn, suiteBtn].forEach(btn => {
-    if (btn === e.target) {
-      buildCards(customer.filterByType(btn.labels[0].innerText));
-      console.log(slides, currentRooms)
+  if (e.target.checked && e.target === activeType) {
+    e.target.checked = false;
+    // Array.from(slides.children).forEach(slide => removeSlide(slide))
+    buildLimitedCards(customer.availableRooms)
+
+  } else {
+    [singleRoomBtn, juniorSuiteBtn, residentialSuiteBtn, suiteBtn].forEach(btn => {
+      if (btn === e.target) {
+        activeType = e.target;
+        buildCards(customer.filterByType(btn.labels[0].innerText, currentRooms));
+        console.log(slides, currentRooms)
+      }
+    })
+  }
+}
+
+function buildLimitedCards(dataSet) {
+  if (dataSet.length < 4) {
+    glideArrows[0].classList.add('hidden')
+    glideArrows[1].classList.add('hidden')
+  } else {
+    glideArrows[0].classList.remove('hidden')
+    glideArrows[1].classList.remove('hidden')
+  }
+  
+  Array.from(slides.children).forEach(slide => {
+    const foundRoom = dataSet.find(room => {
+      return room.number === Number(slide.querySelector('.number').innerText)
+    })
+    if (foundRoom) {
+      console.log('hello')
+      generateRoomCard(foundRoom);
+    } else {
+      removeSlide(slide);
     }
   })
+  glide['_c'].Html.slides = [...slides.children];
+  console.log(slides.children)
+}
+
+function removeSlide(slide) {
+  slides.removeChild(slide)
+  slide.remove();
+  slide.classList.add('hidden');
+}
+
+function selectRoom(e) {
+  if (e.target.classList.contains('see-more')) {
+    // console.log(e.target.parentNode.querySelector('.number').innerText)
+    const roomNum = 
+    Number(e.target.parentNode.querySelector('.number').innerText);
+    const room = customer.rooms.find(room => room.number === roomNum);
+    showCurrentRoom(room);
+  } 
+}
+
+function showCurrentRoom(room) {
+  currentRoomContainer.classList.remove('vis-hidden');
+  featuredRoom = room;
+  const infoList = currentRoomContainer.querySelector('.room-info');
+  console.log(infoList.children)
+  infoList.children[0].innerText = room.roomType;
+  infoList.children[1].innerText = room.number;
+  infoList.children[2].innerText = room.bidet;
+  infoList.children[3].innerText = room.bedSize;
+}
+
+function bookRoom(e) {
+  if (e.target.classList.contains('book-btn') && checkUserErrors()) {
+    const postObj = {"userID": customer.id, "date": activeDate, "roomNumber": featuredRoom.number}
+    fetch(bookingsUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(postObj)
+    })
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } 
+      })
+    }
+}
+
+function checkUserErrors() {
+  if (!activeDate) {
+    alert('Need Date')
+    return false;
+  } else if (!featuredRoom) {
+    alert('Need Room')
+    return false;
+  } else {
+    return true;
+  }
+}
+
+function showBookedMsg() {
+  bookMsg.classList.remove('vis-hidden');
+  const type = activeType.labels[0].innerText
+  bookMsg.innerText = 
+  `Sorry we have no available ${type}'s available on ${activeDate}`;
 }
