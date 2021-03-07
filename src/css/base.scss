@@ -116,6 +116,14 @@ input[type="radio"]:checked + label {
   width: 3vh;
 }
 
+select {
+  grid-area: 1 / 3 / 2 / 4;
+  right: 0;
+  width: 85%;
+  background-color: transparent;
+  border: none;
+}
+
 
 // Desktop
 @media screen and (min-width: 801px) {
@@ -152,7 +160,7 @@ input[type="radio"]:checked + label {
 
   .glide__slide {
     width: 25%;
-    margin: 0;
+    margin: 5%;
     padding: 0;
   }
 
@@ -323,4 +331,8 @@ input[type="radio"]:checked + label {
 
 .hidden {
   display: none;
+}
+
+.vis-hidden {
+  visibility: hidden;
 }
