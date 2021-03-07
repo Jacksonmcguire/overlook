@@ -6,10 +6,11 @@ class Customer extends HotelRepository {
     this.name = userData.name;
     this.totalSpent = 0;
     this.bookedRooms = [];
+    this.availableRooms = [];
   }
   getBookings() {
     this.bookings.forEach(booking => {
-      if (booking.userID === this.id) {
+      if (booking.userID === this.id && !this.bookedRooms.includes(booking)) {
         this.bookedRooms.push(booking)
       }
     })
@@ -24,6 +25,19 @@ class Customer extends HotelRepository {
       }
       return totalSpent
     }, 0)
+  }
+  
+  filterByDate(date) {
+    const bookedToday = this.bookings.filter(booking => booking.date === date);
+    this.availableRooms = 
+    this.rooms.filter(room => !bookedToday.find(booking => {
+      return booking.roomNumber === room.number;
+    }))
+    return this.availableRooms;
+  }
+
+  filterByType(roomType, dataSet = this.availableRooms) {
+    return dataSet.filter(room => room.roomType === roomType);
   }
 }
 

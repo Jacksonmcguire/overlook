@@ -1,7 +1,7 @@
 /* This is an example of using Sass, otherwise plain CSS works too*/
 @import 'header';
-@import "node_modules/@glidejs/glide/src/assets/sass/glide.core";
-@import "node_modules/@glidejs/glide/src/assets/sass/glide.theme";
+@import "../../node_modules/@glidejs/glide/src/assets/sass/glide.core";
+@import "../../node_modules/@glidejs/glide/src/assets/sass/glide.theme";
 
 $primary-background: radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(252,70,107,1) 100%);
 
@@ -28,6 +28,7 @@ header {
   position: fixed;
   top: 0;
   width: 100%;
+  background-color: whitesmoke;
 }
 
 header h1 {
@@ -40,16 +41,19 @@ header h1 {
   grid-area: 2 / 1 / 4 / 1;
 }
 
-
 #calendarIcon {
-  @include header-button('../calendar-date.svg');
-  grid-area: 2 / 3 / 4 / 3;
+  border: none;
+  background-size: contain;
+  grid-area: 2 / 3 / 4 / 4;
+  justify-content: flex-start;
+  align-content: flex-start;
+  width: 85%;
+  background-color: transparent;
 }
 
 .dropdown-content {
   visibility: hidden;
-  display: flex;
-  flex-flow: column;
+  display: block;
   grid-area: 3 / 1 / 3 / 2;
   position: fixed;
   margin: 31% 0 0 5%;
@@ -58,7 +62,7 @@ header h1 {
   background-color: rgb(179, 237, 255);
   border-radius: 5px;
   overflow-y: scroll;
-  height: 20%;
+  height: 25%;
 }
 
 .dropdown-content > button,
@@ -74,7 +78,6 @@ header h1 {
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;
-  // overflow-x: scroll;
   overflow-y: hidden;
   padding: 0;
 }
@@ -90,6 +93,37 @@ input[type="radio"]:checked + label {
   border: 1px solid rgba(99, 63, 226, 0.63);
   margin-left: -20%;
 }
+
+.glide__arrow--right {
+  background-image: url('../images/next.svg');
+  background-repeat: no-repeat;
+  border: none;
+  background-size:contain;
+  height: 30px;
+  width: 30px;
+}
+
+.glide__arrow--left {
+ @extend .glide__arrow--right;
+ background-image: url('../images/left-arrow.svg');
+}
+
+.go-back {
+  background-image: url('../images/return.svg');
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 3vh;
+  width: 3vh;
+}
+
+select {
+  grid-area: 1 / 3 / 2 / 4;
+  right: 0;
+  width: 85%;
+  background-color: transparent;
+  border: none;
+}
+
 
 // Desktop
 @media screen and (min-width: 801px) {
@@ -124,22 +158,39 @@ input[type="radio"]:checked + label {
     margin: 0;
   }
 
+  .glide__slide {
+    width: 25%;
+    margin: 5%;
+    padding: 0;
+  }
+
   .glide__slide img,
   .glide__slide article {
     width: 30vh;
   }
-  
+
+  .glide__bullets {
+    bottom: 0;
+  }
+
+  .glide__bullet {
+    align-self: flex-end;
+    background-color: grey;
+  }
+
+  .glide__bullet:hover, .glide__bullet:focus {
+    background-color: whitesmoke;
+  }
+
   .glide__slide article {
     background-color: grey;
     margin: 0;
   }
 
   .bottom-container {
-    // align-self: flex-end;
     width: 55%;
     height: 60%;
     display: flex;
-    // justify-content: flex-start;
   }
 
   .book-btn {
@@ -276,4 +327,12 @@ input[type="radio"]:checked + label {
 
 .visible {
   visibility: visible;
+}
+
+.hidden {
+  display: none;
+}
+
+.vis-hidden {
+  visibility: hidden;
 }

@@ -13,7 +13,8 @@ describe('Customer', function() {
   let hotelRepo;
   beforeEach(() => {
     hotelRepo = new HotelRepository(rooms, bookings);
-    hotelRepo.customers = userData.map(user => new Customer(rooms, bookings, user));
+    hotelRepo.customers =
+    userData.map(user => new Customer(rooms, bookings, user));
     customer = hotelRepo.customers[0]
   })
   it('should have an id', function() {
@@ -42,5 +43,24 @@ describe('Customer', function() {
       customer.getBookings();
       expect(customer.getTotal()).to.deep.equal(172.09);
     })
-})
+  })
+  describe('filterByDate', () => {
+    it('should be able to filter rooms available on a date', () => {
+      expect(customer.filterByDate("2020/02/16")).to.have.lengthOf(11);
+    })
+  })
+  describe('filterByType', () => {
+    it('should be able to filter those available rooms by type', () => {
+      customer.filterByDate("2020/02/16");
+
+      expect(customer.filterByType("single room")).to.have.lengthOf(6);
+      expect(customer.filterByType("single room")[0]).to.deep.equal(rooms[2])
+    })
+    it('should still hold the previously available rooms for that date', () => {
+      customer.filterByDate("2020/02/16");
+
+      expect(customer.filterByType("single room")).to.have.lengthOf(6);
+      expect(customer.availableRooms).to.have.lengthOf(11);
+    })
+  })
 })
