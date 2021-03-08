@@ -285,7 +285,12 @@ select {
   }
 
   .glide__slide article {
+    background-color: $grey;
     width: 20vh;
+  }
+  
+  .number {
+    color: white;
   }
 
   .glide__slide img {
@@ -344,11 +349,13 @@ select {
   }
 
   .glide__slide article {
-    width: 20vh;
+    background-color: $grey;
+    width: 22vh;
+    font-size: .8em;
   }
 
   .glide__slide img {
-    width: 20vh;
+    width: 22vh;
   }
 
   .glide__slide {
