@@ -53,12 +53,12 @@ const getBookingsData = fetch(bookingsUrl).then(response => response.json());
 
 
 profileButton.addEventListener('click', () => {
-  if (customer) {
-    buildProfile()
+  // if (customer) {
+    buildProfile();
     dropdownMenu.classList.toggle('visible')
-  } else {
-    loginContainer.classList.toggle('hidden');
-  }
+  // } else {
+    // loginContainer.classList.toggle('hidden');
+  // }
 })
 
 yourStays.addEventListener('click', showRoomsBooked);
@@ -67,7 +67,7 @@ dateInput.addEventListener('change', filterDate);
 selectDropdwn.addEventListener('change', filterByType);
 glideTrack.addEventListener('click', selectRoom);
 currentRoomContainer.addEventListener('click', bookRoom);
-loginForm.addEventListener('submit', logIn);
+// loginForm.addEventListener('submit', logIn);
 
 
 Promise.all([getCustomerData, getRoomsData, getBookingsData])
@@ -78,6 +78,8 @@ Promise.all([getCustomerData, getRoomsData, getBookingsData])
     addCustomerData(promiseArr[0].customers, [roomData, bookingData]);
     hotelRepo = new HotelRepository(roomData, bookingData)
     hotelRepo.customers = customerData;
+    customer = hotelRepo.customers[0];
+    buildPage();
   })
 
 function addHotelData(dataSet, classInst) {
@@ -93,33 +95,32 @@ function buildPage() {
   buildCards(customer.rooms);
   currentGlide = glide;
 }
-
-function logIn(e) {
-  e.preventDefault()
-  const userInput = loginForm.querySelector('#userName').value;
-  const userId = userInput.match(/\d+/g).map(Number)[0];
-  const userName = userInput.split(userId)[0];
-  const password = loginForm.querySelector('#passWord').value;
+// function logIn(e) {
+//   e.preventDefault()
+//   const userInput = loginForm.querySelector('#userName').value;
+//   const userId = userInput.match(/\d+/g).map(Number)[0];
+//   const userName = userInput.split(userId)[0];
+//   const password = loginForm.querySelector('#passWord').value;
   
-  if ((userId > 0 && userId <= 50) && 
-  (password === 'overlook2021' && userName === 'customer')) {
-    showLoginError();
-    fetchUser(userId)
-  } else {
-    showLoginError('show');
-  }
-}
+//   if ((userId > 0 && userId <= 50) && 
+//   (password === 'overlook2021' && userName === 'customer')) {
+//     showLoginError();
+//     fetchUser(userId)
+//   } else {
+//     showLoginError('show');
+//   }
+// }
 
-function fetchUser(id) {
-  fetch(customersUrl + `/${id}`)
-    .then(response => {
-      if (response.ok) {
-        customer = 
-        hotelRepo.customers.find(customer => customer.id === id);
-        buildPage();
-      }
-    })
-}
+// function fetchUser(id) {
+//   fetch(customersUrl + `/${id}`)
+//     .then(response => {
+//       if (response.ok) {
+//         customer = 
+//         hotelRepo.customers.find(customer => customer.id === id);
+//         buildPage();
+//       }
+//     })
+// }
 
 function buildProfile() {
   header.querySelector('h1').innerText = customer.name;
