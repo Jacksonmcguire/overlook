@@ -2,8 +2,8 @@
 // Do not delete or rename this file ********
 
 // An example of how you tell webpack to use a CSS (SCSS) file
-import glide from './glide'
-import {Controls, Breakpoints} from '@glidejs/glide/dist/glide.modular.esm'
+import glide, {config} from './glide'
+import Glide, {Controls, Breakpoints} from '@glidejs/glide/dist/glide.modular.esm'
 
 // import './glide'
 import './css/base.scss';
@@ -14,6 +14,8 @@ import Booking from './Booking';
 
 // An example of how you tell webpack to use an image (also need to link to it in the index.html)
 import './images/pexels-pixabay-271624.jpg'
+import './images/error.svg'
+
 const customersUrl = 'http://localhost:3001/api/v1/customers';
 const roomsUrl = 'http://localhost:3001/api/v1/rooms';
 const bookingsUrl = 'http://localhost:3001/api/v1/bookings';
@@ -38,7 +40,7 @@ const loginContainer = document.querySelector('.log-in-page');
 const loginForm = document.querySelector('.login');
 glideTrack.append(slides);
 slides.classList.add('glide__slides');
-let currentRooms = [];
+let currentGlide = null;
 let activeType = null;
 let featuredRoom = null;
 let activeDate = null;
@@ -90,15 +92,18 @@ function addCustomerData(dataSet, dataSets) {
 function buildPage() {
   buildProfile();
   buildCards(customer.rooms);
-  originalSlides = Array.from(slides.children);
+  currentGlide = glide;
+  // originalSlides = Array.from(slides.children);
 }
 
 function logIn(e) {
   e.preventDefault()
-  const userName = loginForm.querySelector('#userName').value;
+  const userInput = loginForm.querySelector('#userName').value;
+  const userId = userInput.match(/\d+/g).map(Number)[0];
+  const userName = userInput.split(userId)[0];
   const password = loginForm.querySelector('#passWord').value;
-  const userId = userName.match(/\d+/g).map(Number)[0];
-  if ((userId > 0 && userId <= 50) && password === 'overlook2021') {
+  if ((userId > 0 && userId <= 50) && password === 'overlook2021' && userName === 'customer') {
+    showLoginError();
     fetch(customersUrl + `/${userId}`)
       .then(response => {
         if (response.ok) {
@@ -107,6 +112,8 @@ function logIn(e) {
           buildPage();
         }
       })
+  } else {
+    showLoginError('show');
   }
 }
 
@@ -148,11 +155,10 @@ function filterDate() {
   activeDate = dateInput.value.replaceAll('-', '/');
   const availableRooms = 
   customer.filterByDate(activeDate);
-  buildLimitedCards(availableRooms);
+  buildLimitedCards(availableRooms, new Glide('.glide'));
 }
 
 function buildCards(dataSet) {
-  currentRooms = customer.availableRooms;
   if (dataSet === customer.rooms) {
     glideArrows[0].classList.remove('hidden')
     glideArrows[1].classList.remove('hidden')
@@ -171,7 +177,7 @@ function generateRoomCard(roomObj) {
     bed = `${roomObj.numBeds} ${roomObj.bedSize} Beds` :
     bed = `${roomObj.numBeds} ${roomObj.bedSize} Bed`;
   const slide = document.createElement('li');
-  slides.appendChild(slide);
+  slides.append(slide);
   slide.classList.add('glide__slide', 'room-container')
   insertCardHtml(slide, bed, bidet, roomObj)
 }
@@ -190,10 +196,10 @@ function insertCardHtml(slide, bed, bidet, room) {
 
 function filterByType() {
   if (selectDropdwn.value === '0') {
-    buildLimitedCards(customer.availableRooms)
+    buildLimitedCards(customer.availableRooms, new Glide('.glide'))
   } else {
     activeType = selectDropdwn.value;
-    buildLimitedCards(customer.filterByType(activeType));
+    buildLimitedCards(customer.filterByType(activeType), new Glide('.glide'));
   }
 }
 
@@ -207,26 +213,35 @@ function checkArrows(length) {
   }
 }
 
-function buildLimitedCards(dataSet) {
-  checkArrows(dataSet.length)
-  const numToMatch = (slide => Number(slide.querySelector('.number').innerText))
-
-  Array.from(originalSlides).forEach(slide => {
-    const foundRoom = dataSet.find(room => room.number === numToMatch(slide))
-    if (foundRoom && !Array.from(slides.children).includes(slide)) {
-      generateRoomCard(foundRoom)
-    } else if (!foundRoom && Array.from(slides.children).includes(slide)) {
-      removeSlide(slide);
-    }
-  })
+function buildLimitedCards(dataSet, glide) {
+  console.log(dataSet)
+  currentGlide.destroy();
+  currentGlide = glide;
+  console.log(config)
+  currentGlide.update(config)
+  // const numToMatch = (slide => Number(slide.querySelector('.number').innerText))
   if (!dataSet.length) showBookedMsg();
+  else {
+  // glide.destroy();
+  removeSlides()
+  dataSet.forEach(room => generateRoomCard(room))
+  currentGlide.mount({Controls, Breakpoints});
+}
+  // generateRoomCard(foundRoom)
+  // Array.from(originalSlides).forEach(slide => {
+  //   const foundRoom = dataSet.find(room => room.number === numToMatch(slide))
+  //   if (foundRoom && !Array.from(slides.children).includes(slide)) {
+    // } else if (!foundRoom && Array.from(slides.children).includes(slide)) {
+      // removeSlide(slide);
+    // }
+  // })
   glide['_c'].Html.slides = [...Array.from(slides.children)];
 }
 
-function removeSlide(slide) {
-  slides.removeChild(slide)
-  slide.remove();
-  slide.classList.add('hidden');
+function removeSlides() {
+  Array.from(slides.children).forEach(slide => {
+    slide.remove();
+  })
 }
 
 function selectRoom(e) {
@@ -287,4 +302,12 @@ function showBookedMsg() {
   const type = activeType;
   bookMsg.innerText = 
   `Sorry we have no available ${type}'s on ${activeDate}`;
+}
+
+function showLoginError(str) {
+  if (str === 'show') {
+    loginContainer.querySelector('.error').classList.remove('hidden')
+  } else {
+    loginContainer.querySelector('.error').classList.add('hidden')
+  }
 }
