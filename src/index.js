@@ -160,6 +160,7 @@ function filterDate() {
   const availableRooms = 
   customer.filterByDate(activeDate);
   buildLimitedCards(availableRooms, new Glide('.glide'));
+  document.querySelector('.book-btn').classList.remove('hidden')
 }
 
 function buildCards(dataSet) {
@@ -174,16 +175,21 @@ function buildCards(dataSet) {
 }
 
 function generateRoomCard(roomObj) {
+  const infoArr = determineCardInfo(roomObj)
+  const slide = document.createElement('li');
+  slides.append(slide);
+  slide.classList.add('glide__slide', 'room-container')
+  insertCardHtml(slide, infoArr[1], infoArr[0], roomObj)
+}
+
+function determineCardInfo(roomObj) {
   let bidet;
   let bed;
   roomObj.bidet ? bidet = 'Bidet' : bidet = '';
   roomObj.numBeds > 1 ?
     bed = `${roomObj.numBeds} ${roomObj.bedSize} Beds` :
     bed = `${roomObj.numBeds} ${roomObj.bedSize} Bed`;
-  const slide = document.createElement('li');
-  slides.append(slide);
-  slide.classList.add('glide__slide', 'room-container')
-  insertCardHtml(slide, bed, bidet, roomObj)
+  return [bidet, bed]
 }
 
 function insertCardHtml(slide, bed, bidet, room) {
@@ -234,11 +240,12 @@ function selectRoom(e) {
 function showCurrentRoom(room) {
   currentRoomContainer.classList.remove('vis-hidden');
   featuredRoom = room;
+  const bidetBeds = determineCardInfo(room);
   const infoList = currentRoomContainer.querySelector('.room-info');
   infoList.children[0].innerText = room.roomType;
-  infoList.children[1].innerText = room.number;
-  infoList.children[2].innerText = room.bidet;
-  infoList.children[3].innerText = room.bedSize;
+  infoList.children[1].innerText = 'Room #' + room.number;
+  infoList.children[2].innerText = bidetBeds[0];
+  infoList.children[3].innerText = bidetBeds[1];
   currentRoomContainer.querySelector('.book-btn').innerText = 
   `$${room.costPerNight.toFixed(0)}
   Book Now`;
@@ -256,6 +263,8 @@ function bookRoom(e) {
     })
       .then(response => {
         if (response.ok) {
+          hotelRepo.bookings.push(new Booking(postObj))
+          filterDate()
           return response.json();
         } 
       })
@@ -264,10 +273,8 @@ function bookRoom(e) {
 
 function checkUserErrors() {
   if (!activeDate) {
-    alert('Need Date')
     return false;
   } else if (!featuredRoom) {
-    alert('Need Room')
     return false;
   } else {
     return true;
