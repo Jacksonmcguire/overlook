@@ -12,6 +12,7 @@
       <h2 class="booked-msg vis-hidden"></h2>
       <button id="profileIcon" aria-label="Profile Dropdown"></button>
       <section class="log-in-page">
+        <p class="error hidden"><span><img src="./images/error.svg" alt="error icon"></span> incorrect username or password</p>
         <form action="" class="login">
           <label for="userName">Username</label>
           <input type="text" id="userName" required>
@@ -56,9 +57,6 @@
             <button class="glide__arrow glide__arrow--left" data-glide-dir="<" aria-label="Previous Card"></button>
             <button class="glide__arrow glide__arrow--right" data-glide-dir=">" aria-label="Next Card"></button>
           </div> 
-          <div class="glide__bullets" data-glide-el="controls[nav]">
-            <button class="glide__bullet" data-glide-dir="<<" aria-label="Carousel Page 1"></button>
-          </div>
       </div>
     </main>
     <!-- Do not include the index.js or main.bundle.js file here - it is done automatically by the webpack server -->
