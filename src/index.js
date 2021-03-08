@@ -3,6 +3,7 @@
 
 // An example of how you tell webpack to use a CSS (SCSS) file
 import glide from './glide'
+import {Controls, Breakpoints} from '@glidejs/glide/dist/glide.modular.esm'
 // import './glide'
 import './css/base.scss';
 import HotelRepository from './hotel-repository';
@@ -148,7 +149,7 @@ function filterDate() {
   activeDate = dateInput.value.replaceAll('-', '/');
   const availableRooms = 
   customer.filterByDate(activeDate);
-  buildCards(availableRooms);
+  buildLimitedCards(availableRooms);
 
 }
 
@@ -160,14 +161,7 @@ function buildCards(dataSet) {
     dataSet.map((room) => {
       return generateRoomCard(room);
     })
-    glide.mount()
-
-  } else if (currentRooms.length > 0) {
-    buildLimitedCards(currentRooms)
-    
-  } else {
-    console.log(currentRooms, customer.availableRooms)
-  }
+    glide.mount({Controls, Breakpoints});
 }
 
 function generateRoomCard(roomObj) {
@@ -180,17 +174,17 @@ function generateRoomCard(roomObj) {
   const slide = document.createElement('li');
   slides.appendChild(slide);
   slide.classList.add('glide__slide', 'room-container')
-  insertCardHtml(slide, bed, bidet, roomObj.number)
+  insertCardHtml(slide, bed, bidet, roomObj)
 }
 
-function insertCardHtml(slide, bed, bidet, num) {
+function insertCardHtml(slide, bed, bidet, room) {
   slide.innerHTML = 
   `<img src="./images/pexels-pixabay-271624.jpg" alt="hotel room">
-  <article>Amenities
-    <button class="see-more">More info</button>
-    <p class="amenities">${bidet}</p>
-    <p class="amenities">${bed}</p>
-    <p class="number">${num}
+  <article>${room.roomType}
+  <p class="amenities">${bidet}</p>
+  <p class="amenities">${bed}</p>
+  <p class="number"value="">${room.number}</p>
+  <button class="see-more">More info</button>
   </article>`;
 }
 
@@ -217,7 +211,6 @@ function checkArrows(length) {
 function buildLimitedCards(dataSet) {
   checkArrows(dataSet.length)
   const numToMatch = (slide => Number(slide.querySelector('.number').innerText))
-
   Array.from(originalSlides).forEach(slide => {
     const foundRoom = dataSet.find(room => room.number === numToMatch(slide))
     if (foundRoom && !Array.from(slides.children).includes(slide)) {

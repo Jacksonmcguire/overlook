@@ -1,10 +1,18 @@
 /* This is an example of using Sass, otherwise plain CSS works too*/
-@import './header';
+@import 'header';
+@import 'buttons';
+@import 'cards';
 @import "../../node_modules/@glidejs/glide/src/assets/sass/glide.core";
 @import "../../node_modules/@glidejs/glide/src/assets/sass/glide.theme";
 
 $primary-background: radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(252,70,107,1) 100%);
+$white-smoke: whitesmoke;
+$peach: #C6AD8F;
+$grey: #425664;
 
+* {
+  color: whitesmoke;
+}
 
 html, body {
   height: 100%;
@@ -22,13 +30,10 @@ input[type="radio"] {
 }
 // Header
 header {
-  display: grid;
-  grid-template: 1fr 1fr 1fr / 1fr 4fr 1fr;
-  height: 20%;
-  position: fixed;
-  top: 0;
-  width: 100%;
-  background-color: whitesmoke;
+  @include header($peach);
+  // background-color: $peach;
+  // color: $peach;
+  left: 0;
 }
 
 header h1 {
@@ -37,18 +42,34 @@ header h1 {
 }
 
 #profileIcon {
-  @include header-button('../user3.svg');
+  @include header-button(url('../user3.svg'));
   grid-area: 2 / 1 / 4 / 1;
 }
 
 #calendarIcon {
-  border: none;
-  background-size: contain;
-  grid-area: 2 / 3 / 4 / 4;
-  justify-content: flex-start;
-  align-content: flex-start;
+  @include header-button(none);
+  grid-area: 1 / 3 / 2 / 4;
   width: 85%;
-  background-color: transparent;
+}
+
+li img {
+  @extend .rounded-top;
+}
+
+.glide__slide article {
+  @extend .bottom-card;
+}
+
+.current-room-container {
+  @extend .featured-card;
+}
+
+.current-room-container {
+  @extend .rounded-top;
+}
+
+.see-more {
+  @include card-button($grey, $white-smoke);
 }
 
 .dropdown-content {
@@ -59,10 +80,11 @@ header h1 {
   margin: 31% 0 0 5%;
   padding-right: 5%;
   padding-bottom: 1%;
-  background-color: rgb(179, 237, 255);
+  background-color: $grey;
   border-radius: 5px;
   overflow-y: scroll;
   height: 25%;
+  color: $white-smoke;
 }
 
 .dropdown-content > button,
@@ -82,19 +104,15 @@ header h1 {
   padding: 0;
 }
 
-input[type="radio"]:checked + label {
-  border-bottom: 1px solid blue;
-}
-
 .book-btn {
   align-self: flex-start;
   background-color: transparent;
   border-radius: 5px;
-  border: 1px solid rgba(99, 63, 226, 0.63);
+  border: 1px solid $grey;
   margin-left: -20%;
 }
 
-.glide__arrow--right {
+.glide__arrow {
   background-image: url('../images/next.svg');
   background-repeat: no-repeat;
   border: none;
@@ -104,7 +122,6 @@ input[type="radio"]:checked + label {
 }
 
 .glide__arrow--left {
- @extend .glide__arrow--right;
  background-image: url('../images/left-arrow.svg');
 }
 
@@ -117,7 +134,7 @@ input[type="radio"]:checked + label {
 }
 
 select {
-  grid-area: 1 / 3 / 2 / 4;
+  grid-area: 2 / 3 / 3 / 4;
   right: 0;
   width: 85%;
   background-color: transparent;
@@ -152,16 +169,6 @@ select {
     margin: 6%;
   }
 
-  .current-room-container {
-    width: 30%;
-    margin: 1%;
-    display: flex;
-    flex-flow: column;
-    background-color: whitesmoke;
-    border-radius: 5%;
-    height: 50%;
-  }
-
   .glide {
     align-self: flex-end;
     height: 60%;
@@ -189,15 +196,15 @@ select {
 
   .glide__bullet {
     align-self: flex-end;
-    background-color: grey;
+    background-color: $grey;
   }
 
   .glide__bullet:hover, .glide__bullet:focus {
-    background-color: whitesmoke;
+    background-color: $white-smoke;
   }
 
   .glide__slide article {
-    background-color: grey;
+    background-color: $grey;
     margin: 0;
   }
 
@@ -243,49 +250,85 @@ select {
 
   .current-room-container {
     align-self: center;
-    display: flex;
-    background-color: whitesmoke;
-    margin: 5%;
-    width: 60%;
-    height: 20vh;
+    background-color: $peach;
+    width: 90%;
+    height: 28vh;
     border-radius: 10px;
+    text-align: center;
   }
 
-  .room-type {
+  .current-room-container ul {
+    margin-top: -5%;
     display: flex;
-    flex-flow: column;
-    overflow-y: scroll;
   }
-  
-  main form {
-    display: flex;
-    flex-flow: column;
-    justify-content: space-around;
-    padding: 5%;
-    width: 15%;
+
+  .book-btn {
+    align-self: flex-end;
   }
 
   .bottom-container {
     display: flex;
   }
 
-  .bottom-container ul {
+ main {
     height: 100%;
-    width: 70%; 
-    align-self: flex-end;
+    display: flex;
+    flex-flow: column;
+    justify-content: flex-end;
   }
 
-  li {
-    flex: none;
-    // height: 70%;
-    // width: 75%;
-    background-color: whitesmoke;
-    margin: 5%;
+  .glide__slide article {
+    width: 20vh;
   }
+
+  .glide__slide img {
+    width: 20vh;
+  }
+
+  .glide__slide {
+    height: 40vh;
+    width: 25%;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+  }
+
+  .glide__slides {
+    height: 50vh;
+    align-self: flex-start;
+  }
+
 
 }
 // Mobile
+
+
+
 @media screen and (max-width: 500px) {
+
+  body {
+    display: flex;
+    flex-flow: column;
+  }
+
+  header {
+    grid-template: 1fr / 1fr 1fr 1fr;
+    font-size: 2vh;
+  }
+
+  #profileIcon {
+    grid-area: 1 / 2 / 1 / 3;
+    height: 50%;
+    margin-top: 25%;
+  }
+
+  #calendarIcon {
+    background-image: url('../calendar-date.svg');
+    color: transparent;
+    background-size: contain;
+    background-color: transparent;
+    font-size: 50vh;
+  }
 
   main {
     height: 100%;
@@ -293,30 +336,59 @@ select {
     flex-flow: column;
   }
 
-  main img {
-    border-radius: 5px;
-    margin: 5%;
-    align-self: center;
+  .glide__slide article {
+    width: 20vh;
+  }
+
+  .glide__slide img {
+    width: 20vh;
+  }
+
+  .glide__slide {
+    height: 10vh;
+    width: 25%;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+  }
+
+  .glide__slides {
+    height: 50vh;
+  }
+
+  .glide__arrow {
+    background-image: none;
+  }
+
+  .bottom-container {
+    align-self: flex-end;
+    display: flex;
+    flex-flow: column;
+    width: 90%;
   }
 
   .current-room-container {
-    width: 99%;
+    width: 90%;
+    margin-top: 50%;
+    height: 30vh;
+    align-self: center;
+    text-align: center;
+    flex-flow: row;
   }
 
   .glide {
-    height: 10vh;
+    height: 50vh;
+    align-self: flex-end;
   }
 
   .current-room-container > img {
-    width: 100%;
-    background-size: cover;
+    width: 30%;
+    background-size: contain;
   }
 
-  main form {
-    width: 90%;
-    flex-flow: row;
-    justify-content: space-between;
-    align-self: normal;
+  .current-room-container ul {
+    margin-top: initial;
+    display: block;
   }
 
   .bottom-container li {
@@ -327,12 +399,6 @@ select {
     width: 100%;
   }
 
-  .glide__slide img,
-  .glide__slide article {
-    // flex: ;
-    height: 15vh;
-    // margin: 5%;
-  }
 
   .bottom-container {
     display: initial;
