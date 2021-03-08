@@ -2,6 +2,7 @@ import Glide from '@glidejs/glide'
 export const config = {
   perView: 3,
   dragTreshold: 0,
+  autoplay: 3000,
   breakpoints: {
     760: {
       perView: 2
