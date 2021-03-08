@@ -44,7 +44,6 @@ let currentGlide = null;
 let activeType = null;
 let featuredRoom = null;
 let activeDate = null;
-let originalSlides = null;
 
 
 const getCustomerData = fetch(customersUrl).then(response => response.json());
@@ -93,7 +92,6 @@ function buildPage() {
   buildProfile();
   buildCards(customer.rooms);
   currentGlide = glide;
-  // originalSlides = Array.from(slides.children);
 }
 
 function logIn(e) {
@@ -102,19 +100,25 @@ function logIn(e) {
   const userId = userInput.match(/\d+/g).map(Number)[0];
   const userName = userInput.split(userId)[0];
   const password = loginForm.querySelector('#passWord').value;
-  if ((userId > 0 && userId <= 50) && password === 'overlook2021' && userName === 'customer') {
+  
+  if ((userId > 0 && userId <= 50) && 
+  (password === 'overlook2021' && userName === 'customer')) {
     showLoginError();
-    fetch(customersUrl + `/${userId}`)
-      .then(response => {
-        if (response.ok) {
-          customer = 
-        hotelRepo.customers.find(customer => customer.id === userId);
-          buildPage();
-        }
-      })
+    fetchUser(userId)
   } else {
     showLoginError('show');
   }
+}
+
+function fetchUser(id) {
+  fetch(customersUrl + `/${id}`)
+    .then(response => {
+      if (response.ok) {
+        customer = 
+        hotelRepo.customers.find(customer => customer.id === id);
+        buildPage();
+      }
+    })
 }
 
 function buildProfile() {
@@ -186,11 +190,10 @@ function insertCardHtml(slide, bed, bidet, room) {
   slide.innerHTML = 
   `<img src="./images/pexels-pixabay-271624.jpg" alt="hotel room">
   <article>${room.roomType}
-    <button class="see-more">More info</button>
-    <p class="amenities">${bidet}</p>
-    <p class="amenities">${bed}</p>
-    <p class="amenities">Room #</p>
-    <p class="number">${room.number}
+  <p class="amenities">${bidet}</p>
+  <p class="amenities">${bed}</p>
+  <p class="amenities">Room #</p>
+  <p class="number">${room.number}
   </article>`;
 }
 
@@ -203,39 +206,16 @@ function filterByType() {
   }
 }
 
-function checkArrows(length) {
-  if (length < 4) {
-    glideArrows[0].classList.add('hidden')
-    glideArrows[1].classList.add('hidden')
-  } else {
-    glideArrows[0].classList.remove('hidden')
-    glideArrows[1].classList.remove('hidden')
-  }
-}
-
 function buildLimitedCards(dataSet, glide) {
-  console.log(dataSet)
   currentGlide.destroy();
   currentGlide = glide;
-  console.log(config)
-  currentGlide.update(config)
-  // const numToMatch = (slide => Number(slide.querySelector('.number').innerText))
+  currentGlide.update(config);
   if (!dataSet.length) showBookedMsg();
   else {
-  // glide.destroy();
-  removeSlides()
-  dataSet.forEach(room => generateRoomCard(room))
-  currentGlide.mount({Controls, Breakpoints});
-}
-  // generateRoomCard(foundRoom)
-  // Array.from(originalSlides).forEach(slide => {
-  //   const foundRoom = dataSet.find(room => room.number === numToMatch(slide))
-  //   if (foundRoom && !Array.from(slides.children).includes(slide)) {
-    // } else if (!foundRoom && Array.from(slides.children).includes(slide)) {
-      // removeSlide(slide);
-    // }
-  // })
-  glide['_c'].Html.slides = [...Array.from(slides.children)];
+    removeSlides()
+    dataSet.forEach(room => generateRoomCard(room))
+    currentGlide.mount({Controls, Breakpoints});
+  }
 }
 
 function removeSlides() {
@@ -245,12 +225,10 @@ function removeSlides() {
 }
 
 function selectRoom(e) {
-  if (e.target.classList.contains('see-more')) {
-    const roomNum = 
+  const roomNum = 
     Number(e.target.parentNode.querySelector('.number').innerText);
-    const room = customer.rooms.find(room => room.number === roomNum);
-    showCurrentRoom(room);
-  } 
+  const room = customer.rooms.find(room => room.number === roomNum);
+  showCurrentRoom(room);
 }
 
 function showCurrentRoom(room) {
@@ -264,7 +242,6 @@ function showCurrentRoom(room) {
   currentRoomContainer.querySelector('.book-btn').innerText = 
   `$${room.costPerNight.toFixed(0)}
   Book Now`;
-  
 }
 
 function bookRoom(e) {
