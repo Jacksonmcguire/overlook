@@ -31,8 +31,6 @@ input[type="radio"] {
 // Header
 header {
   @include header($peach);
-  // background-color: $peach;
-  // color: $peach;
   left: 0;
 }
 
@@ -109,6 +107,20 @@ li img {
   border-radius: 5px;
   border: 1px solid $white-smoke;
   margin-left: -20%;
+}
+
+.error {
+  position: fixed;
+  align-self: flex-end;  
+}
+
+input {
+  color: $grey;
+}
+
+.error span img {
+  height: 10px;
+  width: 10px;
 }
 
 .glide__arrow {
