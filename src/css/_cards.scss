@@ -1,12 +1,14 @@
 $white-smoke: whitesmoke;
-$steel: rgb(124, 137, 196);
+$peach: #C6AD8F;
+$grey: #425664;
+
 
 .featured-card {
   width: 30%;
     margin: 1%;
     display: flex;
     flex-flow: column;
-    background-color: $steel;
+    background-color: $peach;
     border-radius: 10px;
     height: 70%;
 }

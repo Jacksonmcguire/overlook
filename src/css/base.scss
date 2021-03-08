@@ -7,7 +7,12 @@
 
 $primary-background: radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(252,70,107,1) 100%);
 $white-smoke: whitesmoke;
-$steel: rgb(124, 137, 196);
+$peach: #C6AD8F;
+$grey: #425664;
+
+* {
+  color: whitesmoke;
+}
 
 html, body {
   height: 100%;
@@ -25,8 +30,9 @@ input[type="radio"] {
 }
 // Header
 header {
-  @include header($white-smoke);
-  background-color: $steel;
+  @include header($peach);
+  // background-color: $peach;
+  // color: $peach;
   left: 0;
 }
 
@@ -63,7 +69,7 @@ li img {
 }
 
 .see-more {
-  @include card-button($steel, $white-smoke);
+  @include card-button($grey, $white-smoke);
 }
 
 .dropdown-content {
@@ -74,10 +80,11 @@ li img {
   margin: 31% 0 0 5%;
   padding-right: 5%;
   padding-bottom: 1%;
-  background-color: rgb(179, 237, 255);
+  background-color: $grey;
   border-radius: 5px;
   overflow-y: scroll;
   height: 25%;
+  color: $white-smoke;
 }
 
 .dropdown-content > button,
@@ -97,15 +104,11 @@ li img {
   padding: 0;
 }
 
-input[type="radio"]:checked + label {
-  border-bottom: 1px solid blue;
-}
-
 .book-btn {
   align-self: flex-start;
   background-color: transparent;
   border-radius: 5px;
-  border: 1px solid rgba(99, 63, 226, 0.63);
+  border: 1px solid $grey;
   margin-left: -20%;
 }
 
@@ -179,15 +182,15 @@ select {
 
   .glide__bullet {
     align-self: flex-end;
-    background-color: $steel;
+    background-color: $grey;
   }
 
   .glide__bullet:hover, .glide__bullet:focus {
-    background-color: whitesmoke;
+    background-color: $white-smoke;
   }
 
   .glide__slide article {
-    background-color: $steel;
+    background-color: $grey;
     margin: 0;
   }
 
@@ -233,7 +236,7 @@ select {
 
   .current-room-container {
     align-self: center;
-    background-color: $steel;
+    background-color: $peach;
     width: 90%;
     height: 28vh;
     border-radius: 10px;
@@ -262,7 +265,6 @@ select {
 
   .glide__slide article {
     width: 20vh;
-    background-color: $steel;
   }
 
   .glide__slide img {
@@ -322,7 +324,6 @@ select {
 
   .glide__slide article {
     width: 20vh;
-    background-color: $steel;
   }
 
   .glide__slide img {
