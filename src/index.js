@@ -31,6 +31,8 @@ const glideTrack = document.querySelector('.glide__track')
 const slides = document.createElement('ul');
 const glideArrows = document.querySelectorAll('.glide__arrow');
 const bookMsg = document.querySelector('.booked-msg');
+const loginContainer = document.querySelector('.log-in-page');
+const loginForm = document.querySelector('.login');
 glideTrack.append(slides);
 slides.classList.add('glide__slides');
 let currentRooms = [];
@@ -47,8 +49,12 @@ const getBookingsData = fetch(bookingsUrl).then(response => response.json());
 
 
 profileButton.addEventListener('click', () => {
-  buildProfile()
-  dropdownMenu.classList.toggle('visible')
+  if (customer) {
+    buildProfile()
+    dropdownMenu.classList.toggle('visible')
+  } else {
+    loginContainer.classList.toggle('hidden');
+  }
 })
 
 yourStays.addEventListener('click', showRoomsBooked);
@@ -57,6 +63,8 @@ dateInput.addEventListener('change', filterDate);
 selectDropdwn.addEventListener('change', filterByType);
 glideTrack.addEventListener('click', selectRoom);
 currentRoomContainer.addEventListener('click', bookRoom);
+loginForm.addEventListener('submit', logIn);
+
 
 Promise.all([getCustomerData, getRoomsData, getBookingsData])
   .then((promiseArr) => {
@@ -66,8 +74,8 @@ Promise.all([getCustomerData, getRoomsData, getBookingsData])
     addCustomerData(promiseArr[0].customers, [roomData, bookingData]);
     hotelRepo = new HotelRepository(roomData, bookingData)
     hotelRepo.customers = customerData;
-    customer = hotelRepo.customers[0];
-    buildPage();
+    // customer = hotelRepo.customers[0];
+    // buildPage();
   })
 
 function addHotelData(dataSet, classInst) {
@@ -84,7 +92,27 @@ function buildPage() {
   originalSlides = Array.from(slides.children);
 }
 
+function logIn(e) {
+  e.preventDefault()
+  const userName = loginForm.querySelector('#userName').value;
+  const password = loginForm.querySelector('#passWord').value;
+  const userId = userName.match(/\d+/g).map(Number)[0];
+  console.log(userId);
+  if ((userId > 0 && userId <= 50) && password === 'overlook2021') {
+    console.log('successfulUser')
+    fetch(customersUrl + `/${userId}`)
+      .then(response => {
+        if (response.ok) {
+          customer = 
+        hotelRepo.customers.find(customer => customer.id === userId);
+          buildPage();
+        }
+      })
+  }
+}
+
 function buildProfile() {
+  loginContainer.classList.add('hidden');
   customer.totalSpent = 0;
   customer.getBookings();
   profileName.innerText = customer.name;
