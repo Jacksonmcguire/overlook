@@ -37,11 +37,13 @@ header {
 header h1 {
   grid-area: 1 / 1 / 1 / 2;
   text-align: center;
+  color: $grey;
 }
 
 #profileIcon {
-  @include header-button(url('../user3.svg'));
+  @include header-button(url('../images/user.png'));
   grid-area: 2 / 1 / 4 / 1;
+  margin-left: 10%;
 }
 
 #calendarIcon {
@@ -198,6 +200,12 @@ select {
     width: 25%;
     margin: 5%;
     padding: 0;
+    opacity: .91;
+    &:hover {
+      opacity: 1;
+      width: 27%;
+      height: 103%;
+    }
   }
 
   .glide__slide img,
@@ -205,21 +213,9 @@ select {
     width: 30vh;
   }
 
-  .glide__bullets {
-    bottom: 0;
-  }
-
-  .glide__bullet {
-    align-self: flex-end;
-    background-color: $grey;
-  }
-
-  .glide__bullet:hover, .glide__bullet:focus {
-    background-color: $white-smoke;
-  }
-
   .glide__slide article {
     background-color: $grey;
+    opacity: .89;
     margin: 0;
   }
 
