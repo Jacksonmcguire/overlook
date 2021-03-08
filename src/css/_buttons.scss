@@ -1,0 +1,9 @@
+
+@mixin card-button($background, $text-border) {
+  align-self: flex-start;
+  background-color: $background;
+  color: $text-border;
+  border: 1px solid $text-border;
+  border-radius: 10px;
+  cursor: pointer;
+}
