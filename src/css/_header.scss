@@ -1,0 +1,17 @@
+@mixin header-button($background-img) {
+  background-color: transparent;
+  border: none;
+  background-image: $background-img;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+@mixin header($color) {
+  display: grid;
+  grid-template: 1fr 1fr 1fr / 1fr 4fr 1fr;
+  height: 20%;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background-color: $color;
+}

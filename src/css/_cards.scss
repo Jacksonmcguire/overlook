@@ -1,0 +1,29 @@
+$white-smoke: whitesmoke;
+$peach: #C6AD8F;
+$grey: #425664;
+
+
+.featured-card {
+  width: 30%;
+    margin: 1%;
+    display: flex;
+    flex-flow: column;
+    background-color: $peach;
+    border-radius: 10px;
+    height: 70%;
+}
+
+.rounded-top {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.bottom-card {
+  text-align: center;
+  width: 30vh;
+  padding-bottom: -5%;
+  height: 20vh;
+  color: $white-smoke;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}

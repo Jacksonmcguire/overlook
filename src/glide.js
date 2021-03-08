@@ -5,12 +5,13 @@ const config = {
   // focusAt: 'center',
   dragTreshold: 0,
   breakpoints: {
-    800: {
+    760: {
       perView: 2
     },
 
     500: {
-      perView: 1
+      perView: 1.4,
+      // peek: 60
     }
   },
   arrows: true
