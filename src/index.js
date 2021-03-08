@@ -4,6 +4,7 @@
 // An example of how you tell webpack to use a CSS (SCSS) file
 import glide from './glide'
 import {Controls, Breakpoints} from '@glidejs/glide/dist/glide.modular.esm'
+
 // import './glide'
 import './css/base.scss';
 import HotelRepository from './hotel-repository';
@@ -19,6 +20,7 @@ const bookingsUrl = 'http://localhost:3001/api/v1/bookings';
 let hotelRepo = null;
 let customer = null;
 
+const header = document.querySelector('header');
 const profileButton = document.querySelector('#profileIcon');
 const dropdownMenu = document.querySelector('.dropdown-content');
 let yourStays = dropdownMenu.querySelector('button');
@@ -32,6 +34,8 @@ const glideTrack = document.querySelector('.glide__track')
 const slides = document.createElement('ul');
 const glideArrows = document.querySelectorAll('.glide__arrow');
 const bookMsg = document.querySelector('.booked-msg');
+const loginContainer = document.querySelector('.log-in-page');
+const loginForm = document.querySelector('.login');
 glideTrack.append(slides);
 slides.classList.add('glide__slides');
 let currentRooms = [];
@@ -48,8 +52,12 @@ const getBookingsData = fetch(bookingsUrl).then(response => response.json());
 
 
 profileButton.addEventListener('click', () => {
-  buildProfile()
-  dropdownMenu.classList.toggle('visible')
+  if (customer) {
+    buildProfile()
+    dropdownMenu.classList.toggle('visible')
+  } else {
+    loginContainer.classList.toggle('hidden');
+  }
 })
 
 yourStays.addEventListener('click', showRoomsBooked);
@@ -58,6 +66,8 @@ dateInput.addEventListener('change', filterDate);
 selectDropdwn.addEventListener('change', filterByType);
 glideTrack.addEventListener('click', selectRoom);
 currentRoomContainer.addEventListener('click', bookRoom);
+loginForm.addEventListener('submit', logIn);
+
 
 Promise.all([getCustomerData, getRoomsData, getBookingsData])
   .then((promiseArr) => {
@@ -67,8 +77,6 @@ Promise.all([getCustomerData, getRoomsData, getBookingsData])
     addCustomerData(promiseArr[0].customers, [roomData, bookingData]);
     hotelRepo = new HotelRepository(roomData, bookingData)
     hotelRepo.customers = customerData;
-    customer = hotelRepo.customers[0];
-    buildPage();
   })
 
 function addHotelData(dataSet, classInst) {
@@ -85,7 +93,26 @@ function buildPage() {
   originalSlides = Array.from(slides.children);
 }
 
+function logIn(e) {
+  e.preventDefault()
+  const userName = loginForm.querySelector('#userName').value;
+  const password = loginForm.querySelector('#passWord').value;
+  const userId = userName.match(/\d+/g).map(Number)[0];
+  if ((userId > 0 && userId <= 50) && password === 'overlook2021') {
+    fetch(customersUrl + `/${userId}`)
+      .then(response => {
+        if (response.ok) {
+          customer = 
+        hotelRepo.customers.find(customer => customer.id === userId);
+          buildPage();
+        }
+      })
+  }
+}
+
 function buildProfile() {
+  header.querySelector('h1').innerText = customer.name;
+  loginContainer.classList.add('hidden');
   customer.totalSpent = 0;
   customer.getBookings();
   profileName.innerText = customer.name;
@@ -122,7 +149,6 @@ function filterDate() {
   const availableRooms = 
   customer.filterByDate(activeDate);
   buildLimitedCards(availableRooms);
-
 }
 
 function buildCards(dataSet) {
@@ -134,6 +160,7 @@ function buildCards(dataSet) {
       return generateRoomCard(room);
     })
     glide.mount({Controls, Breakpoints});
+  } 
 }
 
 function generateRoomCard(roomObj) {
@@ -153,10 +180,11 @@ function insertCardHtml(slide, bed, bidet, room) {
   slide.innerHTML = 
   `<img src="./images/pexels-pixabay-271624.jpg" alt="hotel room">
   <article>${room.roomType}
-  <p class="amenities">${bidet}</p>
-  <p class="amenities">${bed}</p>
-  <p class="number"value="">${room.number}</p>
-  <button class="see-more">More info</button>
+    <button class="see-more">More info</button>
+    <p class="amenities">${bidet}</p>
+    <p class="amenities">${bed}</p>
+    <p class="amenities">Room #</p>
+    <p class="number">${room.number}
   </article>`;
 }
 
@@ -166,7 +194,6 @@ function filterByType() {
   } else {
     activeType = selectDropdwn.value;
     buildLimitedCards(customer.filterByType(activeType));
-    console.log(customer.filterByType(activeType))
   }
 }
 
@@ -183,6 +210,7 @@ function checkArrows(length) {
 function buildLimitedCards(dataSet) {
   checkArrows(dataSet.length)
   const numToMatch = (slide => Number(slide.querySelector('.number').innerText))
+
   Array.from(originalSlides).forEach(slide => {
     const foundRoom = dataSet.find(room => room.number === numToMatch(slide))
     if (foundRoom && !Array.from(slides.children).includes(slide)) {
@@ -218,6 +246,10 @@ function showCurrentRoom(room) {
   infoList.children[1].innerText = room.number;
   infoList.children[2].innerText = room.bidet;
   infoList.children[3].innerText = room.bedSize;
+  currentRoomContainer.querySelector('.book-btn').innerText = 
+  `$${room.costPerNight.toFixed(0)}
+  Book Now`;
+  
 }
 
 function bookRoom(e) {
@@ -251,7 +283,6 @@ function checkUserErrors() {
 }
 
 function showBookedMsg() {
-  console.log(customer.availableRooms)
   bookMsg.classList.remove('vis-hidden');
   const type = activeType;
   bookMsg.innerText = 
