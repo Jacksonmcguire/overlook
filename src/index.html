@@ -11,6 +11,15 @@
       <h1>OverLook Hotel</h1>
       <h2 class="booked-msg vis-hidden"></h2>
       <button id="profileIcon" aria-label="Profile Dropdown"></button>
+      <section class="log-in-page hidden">
+        <form action="" class="login">
+          <label for="userName">Username</label>
+          <input type="text" id="userName" required>
+          <label for="passWord">Password</label>
+          <input type="text" id="passWord" required>
+          <button type="submit">Login</button>
+        </form>
+      </section>
       <article class="dropdown-content">
         <h1>Name</h1>
         <h2 class="total-spent"></h2>
@@ -24,14 +33,6 @@
         <option value="single room" id="type2">single room</option>
         <option value="residential suite" id="type3">residential suite</option>
         <option value="junior suite" id="type4">junior suite</option>
-        <!-- <input type="radio" name="roomType" id="type1">
-        <label for="type1">suite</label>
-        <input type="radio" name="roomType" id="type2">
-        <label for="type2">single room</label>
-        <input type="radio" name="roomType" id="type3">
-        <label for="type3">residential suite</label>
-        <input type="radio" name="roomType" id="type4">
-        <label for="type4">junior suite</label> -->
       </select>
       <input type="date" id="calendarIcon" aria-label="Calendar Dropdown"
         min="2020-01-08" max="2020-06-18">
@@ -48,16 +49,6 @@
       </ul>
     </article>
      <section class="bottom-container">
-      <!-- <form class="vis-hidden">
-        <input type="radio" name="roomType" id="type1">
-        <label for="type1">suite</label>
-        <input type="radio" name="roomType" id="type2">
-        <label for="type2">single room</label>
-        <input type="radio" name="roomType" id="type3">
-        <label for="type3">residential suite</label>
-        <input type="radio" name="roomType" id="type4">
-        <label for="type4">junior suite</label>
-      </form> -->
         <div class="glide">
           <div class="glide__track" data-glide-el="track">
           </div>
@@ -67,7 +58,6 @@
           </div> 
           <div class="glide__bullets" data-glide-el="controls[nav]">
             <button class="glide__bullet" data-glide-dir="<<" aria-label="Carousel Page 1"></button>
-            <!-- <button class="glide__bullet" data-glide-dir=">>" aria-label="Carousel Page 2"></button> -->
           </div>
       </div>
     </main>
