@@ -233,17 +233,24 @@ select {
 
   .current-room-container {
     align-self: center;
-    display: flex;
     background-color: $steel;
-    margin: 5%;
-    width: 60%;
-    height: 20vh;
+    width: 90%;
+    height: 28vh;
     border-radius: 10px;
+    text-align: center;
+  }
+
+  .current-room-container ul {
+    margin-top: -5%;
+    display: flex;
+  }
+
+  .book-btn {
+    align-self: flex-end;
   }
 
   .bottom-container {
     display: flex;
-    // align-self: flex-end;
   }
 
  main {
@@ -364,6 +371,10 @@ select {
     background-size: contain;
   }
 
+  .current-room-container ul {
+    margin-top: initial;
+    display: block;
+  }
 
   .bottom-container li {
     padding: 0;
