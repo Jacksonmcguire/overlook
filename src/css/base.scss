@@ -1,5 +1,5 @@
 /* This is an example of using Sass, otherwise plain CSS works too*/
-@import 'header';
+@import './header';
 @import "../../node_modules/@glidejs/glide/src/assets/sass/glide.core";
 @import "../../node_modules/@glidejs/glide/src/assets/sass/glide.theme";
 
@@ -8,6 +8,9 @@ $primary-background: radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(252,70,1
 
 html, body {
   height: 100%;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
 }
 
 li {
@@ -122,6 +125,20 @@ select {
   width: 85%;
   background-color: transparent;
   border: none;
+}
+
+.log-in-page {
+  @extend .dropdown-content;
+  visibility: visible;
+}
+
+.login {
+  height: 70%;
+  display: flex;
+  flex-flow: column;
+  // width: 50%;
+  justify-content: space-around;
+  align-items: center;
 }
 
 
