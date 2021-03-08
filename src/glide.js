@@ -1,8 +1,6 @@
 import Glide from '@glidejs/glide'
-const config = {
-  // type: 'carousel',
+export const config = {
   perView: 3,
-  // focusAt: 'center',
   dragTreshold: 0,
   breakpoints: {
     760: {
@@ -11,7 +9,6 @@ const config = {
 
     500: {
       perView: 1.4,
-      // peek: 60
     }
   },
   arrows: true
