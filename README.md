@@ -10,7 +10,7 @@
 * Clone down the repo
 * Run npm i from the command line
 * To open the website run npm start and navigate to the localhost link in a browser
-* Otherwise, the site is accessible [here](https://github.com/turingschool-examples/overlook-api) through github pages
+* Otherwise, the site is accessible [here](https://jacksonmcguire.github.io/overlook/) through github pages
 ### Testing
 * Again from the command line:
 * npm t to run the tests on the data model
