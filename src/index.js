@@ -16,9 +16,9 @@ import Booking from './Booking';
 import './images/pexels-pixabay-271624.jpg'
 import './images/error.svg'
 
-const customersUrl = 'http://localhost:3001/api/v1/customers';
-const roomsUrl = 'http://localhost:3001/api/v1/rooms';
-const bookingsUrl = 'http://localhost:3001/api/v1/bookings';
+const customersUrl = 'https://boiling-spire-83118.herokuapp.com/api/v1/customers';
+const roomsUrl = 'https://boiling-spire-83118.herokuapp.com/api/v1/rooms';
+const bookingsUrl = 'https://boiling-spire-83118.herokuapp.com/api/v1/bookings';
 let hotelRepo = null;
 let customer = null;
 
