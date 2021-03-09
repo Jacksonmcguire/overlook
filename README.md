@@ -12,6 +12,7 @@
 * To open the website run npm start and navigate to the localhost link in a browser
 * Install the API / Backend here [overlook api](https://github.com/turingschool-examples/overlook-api)
 ### Testing
-  * Again from the command line:
-  * npm t to run the tests on the data model
-
+* Again from the command line:
+* npm t to run the tests on the data model
+### Dependencies
+* [Glide](glidejs.com)
