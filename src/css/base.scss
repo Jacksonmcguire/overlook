@@ -1,13 +1,11 @@
 /* This is an example of using Sass, otherwise plain CSS works too*/
-@import 'header';
+@import '_header';
 @import 'buttons';
 @import 'cards';
 @import "node_modules/@glidejs/glide/src/assets/sass/glide.core";
 @import "node_modules/@glidejs/glide/src/assets/sass/glide.theme";
 
-$primary-background: radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(252,70,107,1) 100%);
-$white-smoke: whitesmoke;
-$peach: #C6AD8F;
+$beige: #C6AD8F;
 $grey: #425664;
 
 * {
@@ -32,7 +30,7 @@ input[type="radio"] {
 }
 // Header
 header {
-  @include header($peach);
+  @include header($beige);
   left: 0;
 }
 
@@ -64,14 +62,16 @@ li img {
 
 .current-room-container {
   @extend .featured-card;
+  align-self: center;
+  img {
+    @extend .rounded-top;
+  }
 }
 
-.current-room-container {
-  @extend .rounded-top;
-}
+
 
 .see-more {
-  @include card-button($grey, $white-smoke);
+  @include card-button($grey, whitesmoke);
 }
 
 .dropdown-content {
@@ -86,7 +86,7 @@ li img {
   border-radius: 5px;
   overflow-y: scroll;
   height: 25%;
-  color: $white-smoke;
+  color: whitesmoke;
 }
 
 .dropdown-content button,
@@ -113,7 +113,7 @@ li img {
 .book-btn {
   background-color: transparent;
   border-radius: 5px;
-  border: 1px solid $white-smoke;
+  border: 1px solid whitesmoke;
   margin-left: -20%;
 }
 
@@ -173,10 +173,9 @@ select {
   padding-left: 10%;
   justify-content: space-around;
   align-content: center;
-}
-
-.login button {
-  @include card-button($grey, whitesmoke)
+  button {
+    @include card-button($grey, whitesmoke);
+  }
 }
 
 // Desktop
@@ -203,8 +202,9 @@ select {
   }
 
   .glide__slide {
-    width: 25%;
+    width: 15%;
     margin: 5%;
+    height: 100%;
     padding: 0;
     opacity: .91;
     &:hover {
@@ -212,45 +212,32 @@ select {
       width: 27%;
       height: 103%;
     }
-  }
-
-  .glide__slide img,
-  .glide__slide article {
-    width: 30vh;
-  }
-
-  .glide__slide article {
-    background-color: $grey;
-    opacity: .89;
-    margin: 0;
+    img, article {
+      width: 75%;
+    }
+    article {
+      background-color: $grey;
+      margin: 0;
+      height: 80%;
+    }
   }
 
   .bottom-container {
     width: 55%;
     height: 60%;
     display: flex;
+    li {
+      margin: 0 5% 0 5%;
+    }
+    ul {
+      white-space: nowrap;
+    }
   }
 
   .book-btn {
     align-self: flex-end;
   }
 
-  main form {
-    display: flex;
-    flex-flow: column;
-    justify-content: space-around;
-    padding: 5%;
-    width: 15%;
-    height: 50%;
-  }
-
-  .bottom-container li {
-    margin: 0 5% 0 5%;
-  }
-
-  .bottom-container ul {
-    white-space: nowrap;
-  }
 }
 // tablet
 @media screen and (max-width: 800px) {
@@ -259,6 +246,7 @@ select {
     height: 100%;
     display: flex;
     flex-flow: column;
+    justify-content: flex-end;
   }
 
   .dropdown-content {
@@ -270,23 +258,21 @@ select {
     background-color: transparent;
     width: 90%;
     height: 20vh;
-    border-radius: 10px;
     text-align: center;
     flex-flow: row;
     justify-content: center;
     align-items: center;
-  }
-
-  .current-room-container img {
-    height: 20vh;
-  }
-
-  .current-room-container ul {
-    margin-right: 5%;
-    height: 20vh;
-    width: 30%;
-    background-color: $peach;
-    align-self: center;
+    ul {
+      margin-right: 5%;
+      height: 20vh;
+      width: 30%;
+      background-color: $beige;
+      align-self: center;
+    }
+    img {
+      height: 20vh;
+      border-top-right-radius: 0;
+    }
   }
 
   .book-btn {
@@ -299,24 +285,8 @@ select {
     display: flex;
   }
 
- main {
-    height: 100%;
-    display: flex;
-    flex-flow: column;
-    justify-content: flex-end;
-  }
-
-  .glide__slide article {
-    width: 20vh;
-    background-color: $grey;
-  }
-
   .number {
     color: white;
-  }
-
-  .glide__slide img {
-    width: 20vh;
   }
 
   .glide__slide {
@@ -325,6 +295,12 @@ select {
     display: flex;
     flex-flow: column;
     align-items: center;
+    img, article {
+      width: 20vh;
+    }
+    article {
+      background-color: $grey;
+    }
   }
 
   .glide__slides {
@@ -357,33 +333,18 @@ select {
   }
 
   #calendarIcon {
-    background-image: url('../calendar-date.svg');
-    color: transparent;
-    background-size: contain;
-    background-color: transparent;
+    @include header-button(url('../calendar-date.svg'));
     font-size: 50vh;
   }
 
-  main {
-    height: 100%;
-    display: flex;
-    flex-flow: column;
-  }
-
-  .glide__slide article {
-    width: 20vh;
-  }
-
-  .glide__slide img {
-    width: 20vh;
-  }
-
   .glide__slide {
-    height: 10vh;
-    width: 25%;
-    display: flex;
-    flex-flow: column;
-    align-items: center;
+    article, img {
+      width: 20vh;
+      padding-bottom: 1%;
+    }
+    article {
+      height: 100%;
+    }
   }
 
   .glide__slides {
@@ -396,13 +357,21 @@ select {
 
   .bottom-container {
     align-self: flex-end;
-    display: flex;
     flex-flow: column;
     width: 90%;
+    li {
+      padding: 0;
+    }
   }
 
   .current-room-container {
     height: 18vh;
+    img {
+      height: 15vh;
+    }
+    ul {
+      height: 15vh;
+    }
   }
 
   .glide {
@@ -410,30 +379,11 @@ select {
     align-self: flex-end;
   }
 
-  .current-room-container > img {
-    height: 15vh;
-  }
-
-  .current-room-container ul {
-    height: 15vh;
-  }
-
-  .bottom-container li {
-    padding: 0;
-  }
-
-  .bottom-container ul {
-    width: 100%;
-  }
-
   .book-btn {
     height: 25%;
     align-self: flex-end;
   }
 
-  .bottom-container {
-    display: initial;
-  }
 }
 
 .visible {
