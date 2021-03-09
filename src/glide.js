@@ -4,12 +4,14 @@ export const config = {
   dragTreshold: 0,
   autoplay: 3000,
   breakpoints: {
+
     760: {
       perView: 2
     },
 
     500: {
-      perView: 1.4,
+      perView: 1.8,
+      autoplay: false
     }
   },
   arrows: true
