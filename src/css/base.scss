@@ -333,8 +333,7 @@ select {
   }
 
   #calendarIcon {
-    @include header-button(url('../calendar-date.svg'));
-    font-size: 50vh;
+    font-size: 10vh;
   }
 
   .glide__slide {
