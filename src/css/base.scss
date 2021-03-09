@@ -12,9 +12,11 @@ $grey: #425664;
 
 * {
   color: whitesmoke;
+  font-family: 'Poiret One';
 }
 
 html, body {
+  background-color: whitesmoke;
   height: 100%;
 }
 
@@ -261,16 +263,32 @@ select {
 
   .current-room-container {
     align-self: center;
-    background-color: $peach;
+    background-color: transparent;
     width: 90%;
-    height: 28vh;
+    height: 20vh;
     border-radius: 10px;
     text-align: center;
+    flex-flow: row;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .current-room-container img {
+    height: 20vh;
   }
 
   .current-room-container ul {
-    margin-top: -5%;
-    display: flex;
+    margin-right: 5%;
+    height: 20vh;
+    width: 30%;
+    background-color: $peach;
+    align-self: center;
+  }
+
+  .book-btn {
+    height: 4vh;
+    align-self: flex-end;
+    background-color: $grey;
   }
 
   .bottom-container {
@@ -286,6 +304,11 @@ select {
 
   .glide__slide article {
     width: 20vh;
+    background-color: $grey;
+  }
+
+  .number {
+    color: white;
   }
 
   .glide__slide img {
@@ -375,12 +398,7 @@ select {
   }
 
   .current-room-container {
-    width: 90%;
-    margin-top: 50%;
-    height: 30vh;
-    align-self: center;
-    text-align: center;
-    flex-flow: row;
+    height: 18vh;
   }
 
   .glide {
@@ -389,13 +407,11 @@ select {
   }
 
   .current-room-container > img {
-    width: 30%;
-    background-size: contain;
+    height: 15vh;
   }
 
   .current-room-container ul {
-    margin-top: initial;
-    display: block;
+    height: 15vh;
   }
 
   .bottom-container li {
@@ -406,6 +422,10 @@ select {
     width: 100%;
   }
 
+  .book-btn {
+    height: 25%;
+    align-self: flex-end;
+  }
 
   .bottom-container {
     display: initial;
