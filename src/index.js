@@ -215,12 +215,14 @@ function filterByType() {
 }
 
 function buildLimitedCards(dataSet, glide) {
-  currentGlide.destroy();
-  currentGlide = glide;
-  currentGlide.update(config);
+  
   if (!dataSet.length) showBookedMsg();
   else {
-    removeSlides()
+    currentGlide.destroy();
+    currentGlide = glide;
+    currentGlide.update(config);
+    bookMsg.classList.add('vis-hidden');
+    removeSlides();
     dataSet.forEach(room => generateRoomCard(room))
     currentGlide.mount({Controls, Breakpoints});
   }
@@ -275,6 +277,7 @@ function bookRoom(e) {
         } 
       })
   }
+  selectDropdwn.value = "0";
 }
 
 function checkUserErrors() {
