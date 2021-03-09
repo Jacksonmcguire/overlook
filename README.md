@@ -15,4 +15,4 @@
 * Again from the command line:
 * npm t to run the tests on the data model
 ### Dependencies
-* [Glide](glidejs.com)
+* [Glide](https://glidejs.com/)
