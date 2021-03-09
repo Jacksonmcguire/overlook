@@ -155,12 +155,14 @@ function refreshProfile() {
 }
 
 function filterDate() { 
+  setTimeout(buildProfile(), 0);
   selectDropdwn.classList.remove('vis-hidden');
   activeDate = dateInput.value.replaceAll('-', '/');
   const availableRooms = 
   customer.filterByDate(activeDate);
   buildLimitedCards(availableRooms, new Glide('.glide'));
-  document.querySelector('.book-btn').classList.remove('hidden')
+  document.querySelector('.book-btn').classList.remove('hidden');
+  currentRoomContainer.classList.add('vis-hidden');
 }
 
 function buildCards(dataSet) {
@@ -231,6 +233,7 @@ function removeSlides() {
 }
 
 function selectRoom(e) {
+  if (activeDate) currentRoomContainer.classList.remove('hidden');
   const roomNum = 
     Number(e.target.parentNode.querySelector('.number').innerText);
   const room = customer.rooms.find(room => room.number === roomNum);
@@ -253,7 +256,8 @@ function showCurrentRoom(room) {
 
 function bookRoom(e) {
   if (e.target.classList.contains('book-btn') && checkUserErrors()) {
-    const postObj = {"userID": customer.id, "date": activeDate, "roomNumber": featuredRoom.number}
+    const postObj = {"userID": customer.id,
+      "date": activeDate, "roomNumber": featuredRoom.number}
     fetch(bookingsUrl, {
       method: 'POST',
       headers: {
@@ -263,7 +267,9 @@ function bookRoom(e) {
     })
       .then(response => {
         if (response.ok) {
-          hotelRepo.bookings.push(new Booking(postObj))
+          hotelRepo.bookings.push(new Booking(postObj));
+          currentRoomContainer.
+            querySelector('.book-btn').classList.add('hidden');
           filterDate()
           return response.json();
         } 
