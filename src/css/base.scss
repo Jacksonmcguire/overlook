@@ -48,8 +48,13 @@ header h1 {
 
 #calendarIcon {
   @include header-button(none);
+  display: block;
   grid-area: 1 / 3 / 2 / 4;
-  width: 85%;
+  font-size: 3.1vh;
+}
+
+.booked-msg {
+  color: $grey;
 }
 
 li img {
@@ -158,6 +163,7 @@ select {
   width: 85%;
   background-color: transparent;
   border: none;
+  color: $grey;
 }
 
 .log-in-page {
