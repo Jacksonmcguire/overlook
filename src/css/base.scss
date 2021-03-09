@@ -1,9 +1,10 @@
 /* This is an example of using Sass, otherwise plain CSS works too*/
+@import 'normalizer.css';
 @import 'header';
 @import 'buttons';
 @import 'cards';
-@import "../../node_modules/@glidejs/glide/src/assets/sass/glide.core";
-@import "../../node_modules/@glidejs/glide/src/assets/sass/glide.theme";
+@import "node_modules/@glidejs/glide/src/assets/sass/glide.core";
+@import "node_modules/@glidejs/glide/src/assets/sass/glide.theme";
 
 $primary-background: radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(252,70,107,1) 100%);
 $white-smoke: whitesmoke;
@@ -89,13 +90,17 @@ li img {
   color: $white-smoke;
 }
 
-.dropdown-content > button,
+.dropdown-content button,
 .total-spent {
   text-align: center;
   background-color: transparent;
   border: none;
   margin: 4%;
   font-size: 1em;
+}
+
+.dropdown-content h1 {
+  color: white;
 }
 
 .bottom-container ul {
